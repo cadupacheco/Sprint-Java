@@ -14,13 +14,17 @@ Cache de consultas para melhorar a performance.
 
 Tratamento de erros centralizado e boas práticas de design REST.
 
+-----------------------------------------------------------------------
 
-👨‍💻 Desenvolvedores
+👨‍💻 Desenvolvedores:
+
 Carlos Eduardo R C Pacheco – RM: 557323
 
 João Pedro Amorim Brito Virgens – RM: 559213
 
 Pedro Augusto Costa Ladeira – RM: 558514
+
+-----------------------------------------------------------------------
 
 🚀 Tecnologias Utilizadas
 Java 17
@@ -43,6 +47,8 @@ Hibernate
 
 Lombok (opcional)
 
+-----------------------------------------------------------------------
+
 ⚙️ Como Executar o Projeto
 🔧 Pré-requisitos
 Java JDK 17 instalado
@@ -53,12 +59,16 @@ Maven instalado
 
 IDE de sua escolha (IntelliJ, Eclipse, VS Code)
 
+-----------------------------------------------------------------------
+
 🏗️ Passos para rodar:
 1️⃣ Clone ou baixe o projeto
 2️⃣ Configure o Banco de Dados no arquivo src/main/resources/application.properties.
 3️⃣ Compile e execute o projeto.
 4️⃣ Acesse a API na URL padrão
     http://localhost:8080
+
+-----------------------------------------------------------------------
     
 🔗 Endpoints Principais
 /api/motos – CRUD de motos
