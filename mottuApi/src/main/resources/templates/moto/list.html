@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Motos - Mottu</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-motorcycle me-2 text-primary"></i>
+                    Gerenciamento de Motos
+                </h1>
+                <p class="text-muted mb-0">Lista e controle de todas as motos do sistema</p>
+            </div>
+            <div>
+                <a th:href="@{/motos/novo}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'OPERADOR')">
+                    <i class="fas fa-plus me-2"></i>Nova Moto
+                </a>
+            </div>
+        </div>
+
+        <!-- Filtros e Busca -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form th:action="@{/motos}" method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="placa" class="form-label">Buscar por Placa</label>
+                        <input type="text" class="form-control" id="placa" name="placa" 
+                               th:value="${placa}" placeholder="ABC1234">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">Todos os Status</option>
+                            <option value="DISPONIVEL" th:selected="${status == 'DISPONIVEL'}">Disponível</option>
+                            <option value="ALUGADA" th:selected="${status == 'ALUGADA'}">Alugada</option>
+                            <option value="MANUTENCAO" th:selected="${status == 'MANUTENCAO'}">Em Manutenção</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="patioId" class="form-label">Pátio</label>
+                        <select class="form-select" id="patioId" name="patioId">
+                            <option value="">Todos os Pátios</option>
+                            <option th:each="patio : ${patios}" 
+                                    th:value="${patio.idPatio}" 
+                                    th:text="${patio.nomePatio}"
+                                    th:selected="${patioId == patio.idPatio}">
+                                Nome do Pátio
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-search me-1"></i>Filtrar
+                        </button>
+                        <a th:href="@{/motos}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabela de Motos -->
+        <div class="card">
+            <div class="card-body">
+                <div th:if="${motos != null and motos.hasContent()}">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Placa</th>
+                                    <th>Modelo</th>
+                                    <th>Ano</th>
+                                    <th>Status</th>
+                                    <th>Pátio</th>
+                                    <th>Sensor IoT</th>
+                                    <th sec:authorize="hasAnyRole('ADMIN', 'OPERADOR')">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="moto : ${motos.content}">
+                                    <td>
+                                        <strong th:text="${moto.placa}">ABC1234</strong>
+                                    </td>
+                                    <td>
+                                        <span th:text="${moto.modelo != null ? moto.modelo.fabricante + ' ' + moto.modelo.nomeModelo : 'N/A'}">
+                                            Honda CB600F
+                                        </span>
+                                        <br>
+                                        <small class="text-muted" th:text="${moto.modelo != null ? moto.modelo.cilindrada + 'cc' : ''}">600cc</small>
+                                    </td>
+                                    <td th:text="${moto.anoFabricacao}">2023</td>
+                                    <td>
+                                        <span th:switch="${moto.status}">
+                                            <span th:case="'DISPONIVEL'" class="badge bg-success">
+                                                <i class="fas fa-check-circle me-1"></i>Disponível
+                                            </span>
+                                            <span th:case="'ALUGADA'" class="badge bg-warning">
+                                                <i class="fas fa-key me-1"></i>Alugada
+                                            </span>
+                                            <span th:case="'MANUTENCAO'" class="badge bg-danger">
+                                                <i class="fas fa-tools me-1"></i>Manutenção
+                                            </span>
+                                            <span th:case="*" class="badge bg-secondary" th:text="${moto.status}">
+                                                Status
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${moto.patio != null ? moto.patio.nomePatio : 'N/A'}">Pátio Central</span>
+                                        <br>
+                                        <small class="text-muted" th:text="${moto.patio != null ? moto.patio.localizacaoPatio : ''}">São Paulo</small>
+                                    </td>
+                                    <td>
+                                        <div th:if="${moto.sensorIot != null}">
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-satellite-dish me-1"></i>
+                                                <span th:text="${moto.sensorIot.tipoSensor}">GPS</span>
+                                            </span>
+                                            <br>
+                                            <small th:classappend="${moto.sensorIot.bateriaPercentual < 20 ? 'text-danger' : 'text-success'}"
+                                                   th:text="'Bateria: ' + ${moto.sensorIot.bateriaPercentual} + '%'">
+                                                Bateria: 85%
+                                            </small>
+                                        </div>
+                                        <div th:if="${moto.sensorIot == null}">
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-times me-1"></i>Sem sensor
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'OPERADOR')">
+                                        <div class="btn-group" role="group">
+                                            <a th:href="@{/motos/{id}(id=${moto.idMoto})}" 
+                                               class="btn btn-sm btn-outline-info" title="Visualizar">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a th:href="@{/motos/{id}/editar(id=${moto.idMoto})}" 
+                                               class="btn btn-sm btn-outline-warning" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                    title="Excluir" sec:authorize="hasRole('ADMIN')"
+                                                    th:onclick="'confirmarExclusao(' + ${moto.idMoto} + ', \'' + ${moto.placa} + '\')'">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginação -->
+                    <div th:if="${motos.totalPages > 1}" class="d-flex justify-content-between align-items-center mt-4">
+                        <div>
+                            <small class="text-muted">
+                                Mostrando <span th:text="${motos.number * motos.size + 1}">1</span> a 
+                                <span th:text="${motos.number * motos.size + motos.numberOfElements}">10</span> 
+                                de <span th:text="${motos.totalElements}">100</span> registros
+                            </small>
+                        </div>
+                        
+                        <nav>
+                            <ul class="pagination mb-0">
+                                <li class="page-item" th:classappend="${motos.first} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/motos(page=${motos.number - 1}, placa=${placa})}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                
+                                <li th:each="i : ${#numbers.sequence(0, motos.totalPages - 1)}" 
+                                    class="page-item" 
+                                    th:classappend="${i == motos.number} ? 'active'">
+                                    <a class="page-link" th:href="@{/motos(page=${i}, placa=${placa})}" 
+                                       th:text="${i + 1}">1</a>
+                                </li>
+                                
+                                <li class="page-item" th:classappend="${motos.last} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/motos(page=${motos.number + 1}, placa=${placa})}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Lista Vazia -->
+                <div th:if="${motos == null or !motos.hasContent()}" class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-motorcycle fa-4x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">Nenhuma moto encontrada</h4>
+                    <p class="text-muted mb-4">
+                        <span th:if="${placa != null and !placa.isEmpty()}">
+                            Não foi possível encontrar motos com a placa "<strong th:text="${placa}"></strong>".
+                        </span>
+                        <span th:unless="${placa != null and !placa.isEmpty()}">
+                            Ainda não há motos cadastradas no sistema.
+                        </span>
+                    </p>
+                    <div>
+                        <a th:href="@{/motos/novo}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'OPERADOR')">
+                            <i class="fas fa-plus me-2"></i>Cadastrar primeira moto
+                        </a>
+                        <a th:href="@{/motos}" class="btn btn-outline-secondary" th:if="${placa != null and !placa.isEmpty()}">
+                            <i class="fas fa-times me-2"></i>Limpar filtros
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação de Exclusão -->
+        <div class="modal fade" id="modalExclusao" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                            Confirmar Exclusão
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem certeza que deseja excluir a moto <strong id="placaExclusao"></strong>?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação não pode ser desfeita.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <form id="formExclusao" method="post" style="display: inline;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Excluir Moto
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts específicos da página -->
+    <div layout:fragment="scripts">
+        <script>
+            function confirmarExclusao(id, placa) {
+                document.getElementById('placaExclusao').textContent = placa;
+                document.getElementById('formExclusao').action = '/motos/' + id;
+                new bootstrap.Modal(document.getElementById('modalExclusao')).show();
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+    <!-- Fragment: Header -->
+    <div th:fragment="header">
+        <header class="header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <!-- Menu Toggle para Mobile -->
+                            <button class="btn btn-link text-white d-md-none me-3" id="sidebar-toggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            
+                            <!-- Logo e Título -->
+                            <h1 class="mb-0">
+                                <i class="fas fa-motorcycle me-2"></i>
+                                Mottu
+                            </h1>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="user-info justify-content-end">
+                            <!-- Informações do Usuário Logado -->
+                            <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+                                <!-- Notificações -->
+                                <div class="dropdown me-3">
+                                    <button class="btn btn-link text-white position-relative" type="button" 
+                                            id="notificationDropdown" data-bs-toggle="dropdown">
+                                        <i class="fas fa-bell"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <span th:text="${alertasHoje != null ? alertasHoje.size() : 0}">0</span>
+                                        </span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><h6 class="dropdown-header">Alertas Recentes</h6></li>
+                                        <div th:if="${alertasHoje != null and !alertasHoje.isEmpty()}">
+                                            <li th:each="alerta : ${alertasHoje}">
+                                                <a class="dropdown-item" th:href="@{/alertas/{id}(id=${alerta.idAlerta})}">
+                                                    <small class="text-muted" th:text="${alerta.tipoAlerta}"></small><br>
+                                                    <span th:text="${alerta.moto != null ? alerta.moto.placa : 'N/A'}"></span>
+                                                </a>
+                                            </li>
+                                        </div>
+                                        <div th:if="${alertasHoje == null or alertasHoje.isEmpty()}">
+                                            <li><span class="dropdown-item-text">Nenhum alerta hoje</span></li>
+                                        </div>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" th:href="@{/alertas}">Ver todos os alertas</a></li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Menu do Usuário -->
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-white dropdown-toggle" type="button" 
+                                            id="userDropdown" data-bs-toggle="dropdown">
+                                        <i class="fas fa-user-circle me-1"></i>
+                                        <span sec:authentication="name">Usuário</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <span class="dropdown-item-text">
+                                                <strong sec:authentication="name">usuário</strong><br>
+                                                <small class="text-muted">
+                                                    <span sec:authentication="principal.authorities">[ROLE_USER]</span>
+                                                </small>
+                                            </span>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" th:href="@{/auth/profile}">
+                                                <i class="fas fa-user me-2"></i>Meu Perfil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" th:href="@{/configuracoes}">
+                                                <i class="fas fa-cog me-2"></i>Configurações
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <form th:action="@{/logout}" method="post" class="d-inline">
+                                                <button type="submit" class="dropdown-item text-danger">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Sair
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Link de Login para usuários não autenticados -->
+                            <div sec:authorize="!isAuthenticated()">
+                                <a th:href="@{/auth/login}" class="btn btn-outline-light">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</body>
+</html>

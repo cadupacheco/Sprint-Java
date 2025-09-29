@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-br" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title th:text="${usuario.idUsuario != null ? 'Editar Usuário - ' + ${usuario.nome} : 'Novo Usuário'} + ' - Mottu'">Novo Usuário - Mottu</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-user-plus me-2 text-primary"></i>
+                    <span th:text="${usuario.idUsuario != null ? 'Editar Usuário' : 'Novo Usuário'}">Novo Usuário</span>
+                </h1>
+                <p class="text-muted mb-0">
+                    <span th:if="${usuario.idUsuario != null}">Editando dados do usuário <strong th:text="${usuario.nome}">Usuário</strong></span>
+                    <span th:unless="${usuario.idUsuario != null}">Cadastrar um novo usuário no sistema</span>
+                </p>
+            </div>
+            <div>
+                <a th:href="@{/usuarios}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form th:action="${usuario.idUsuario != null ? '/usuarios/' + usuario.idUsuario : '/usuarios'}" 
+                              th:method="${usuario.idUsuario != null ? 'post' : 'post'}" 
+                              th:object="${usuario}" 
+                              novalidate 
+                              data-validate>
+                            
+                            <!-- Hidden field para ID (caso seja edição) -->
+                            <input type="hidden" th:field="*{idUsuario}">
+                            
+                            <!-- Dados Pessoais -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5 class="card-title border-bottom pb-2">
+                                        <i class="fas fa-user me-2"></i>Dados Pessoais
+                                    </h5>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <!-- Nome -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="nome" class="form-label">
+                                        <i class="fas fa-user me-1"></i>Nome Completo *
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           th:field="*{nome}" 
+                                           id="nome" 
+                                           placeholder="João Silva"
+                                           maxlength="50"
+                                           required
+                                           th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
+                                        Erro no nome
+                                    </div>
+                                </div>
+                                
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope me-1"></i>Email *
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           th:field="*{email}" 
+                                           id="email" 
+                                           placeholder="joao@mottu.com"
+                                           maxlength="100"
+                                           required
+                                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                        Erro no email
+                                    </div>
+                                    <div class="form-text">Email será usado para login no sistema</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Credenciais de Acesso -->
+                            <div class="row mb-4 mt-4">
+                                <div class="col-12">
+                                    <h5 class="card-title border-bottom pb-2">
+                                        <i class="fas fa-key me-2"></i>Credenciais de Acesso
+                                    </h5>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <!-- Senha -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="senha" class="form-label">
+                                        <i class="fas fa-lock me-1"></i>
+                                        <span th:text="${usuario.idUsuario != null ? 'Nova Senha (deixe em branco para manter)' : 'Senha *'}">Senha *</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control" 
+                                               th:field="*{senha}" 
+                                               id="senha" 
+                                               placeholder="Mínimo 6 caracteres"
+                                               minlength="6"
+                                               th:required="${usuario.idUsuario == null}"
+                                               th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleSenha">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}">
+                                        Erro na senha
+                                    </div>
+                                    <div class="form-text">Mínimo 6 caracteres, incluindo letras e números</div>
+                                </div>
+                                
+                                <!-- Confirmar Senha -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="confirmarSenha" class="form-label">
+                                        <i class="fas fa-lock me-1"></i>Confirmar Senha
+                                    </label>
+                                    <input type="password" 
+                                           class="form-control" 
+                                           id="confirmarSenha" 
+                                           name="confirmarSenha"
+                                           placeholder="Digite a senha novamente">
+                                    <div class="invalid-feedback" id="erro-confirmar-senha" style="display: none;">
+                                        As senhas não coincidem
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Permissões e Status -->
+                            <div class="row mb-4 mt-4">
+                                <div class="col-12">
+                                    <h5 class="card-title border-bottom pb-2">
+                                        <i class="fas fa-shield-alt me-2"></i>Permissões e Status
+                                    </h5>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <!-- Perfil -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="perfil" class="form-label">
+                                        <i class="fas fa-user-tag me-1"></i>Perfil *
+                                    </label>
+                                    <select class="form-select" 
+                                            th:field="*{perfil}" 
+                                            id="perfil" 
+                                            required
+                                            th:classappend="${#fields.hasErrors('perfil')} ? 'is-invalid'">
+                                        <option value="">Selecione o perfil</option>
+                                        <option value="ADMIN">Administrador - Acesso total</option>
+                                        <option value="OPERADOR">Operador - CRUD motos e visualização</option>
+                                        <option value="MANUTENCAO">Manutenção - Apenas visualização</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('perfil')}" th:errors="*{perfil}">
+                                        Erro no perfil
+                                    </div>
+                                </div>
+                                
+                                <!-- Status Ativo -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="ativo" class="form-label">
+                                        <i class="fas fa-toggle-on me-1"></i>Status
+                                    </label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               th:field="*{ativo}" 
+                                               id="ativo">
+                                        <label class="form-check-label" for="ativo">
+                                            <span id="status-label">Usuário Ativo</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Usuários inativos não podem fazer login</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Prévia do Perfil -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5 class="card-title border-bottom pb-2">
+                                        <i class="fas fa-eye me-2"></i>Prévia do Usuário
+                                    </h5>
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-2 text-center">
+                                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto"
+                                                         style="width: 60px; height: 60px;">
+                                                        <span id="preview-avatar" class="fs-4">U</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <h6 class="card-title mb-1" id="preview-nome">Nome do Usuário</h6>
+                                                    <p class="card-text mb-2">
+                                                        <i class="fas fa-envelope me-1 text-muted"></i>
+                                                        <span id="preview-email">email@mottu.com</span>
+                                                    </p>
+                                                    <p class="card-text mb-0">
+                                                        <span class="badge" id="preview-perfil-badge">
+                                                            <span id="preview-perfil">Perfil</span>
+                                                        </span>
+                                                        <span class="badge ms-2" id="preview-status-badge">
+                                                            <span id="preview-status">Status</span>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botões -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <a th:href="@{/usuarios}" class="btn btn-secondary">
+                                            <i class="fas fa-times me-2"></i>Cancelar
+                                        </a>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-primary me-2" onclick="limparFormulario()">
+                                                <i class="fas fa-eraser me-2"></i>Limpar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-save me-2"></i>
+                                                <span th:text="${usuario.idUsuario != null ? 'Atualizar Usuário' : 'Cadastrar Usuário'}">Cadastrar Usuário</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts específicos da página -->
+    <div layout:fragment="scripts">
+        <script>
+            // Toggle mostrar/ocultar senha
+            document.getElementById('toggleSenha').addEventListener('click', function() {
+                const senha = document.getElementById('senha');
+                const icon = this.querySelector('i');
+                
+                if (senha.type === 'password') {
+                    senha.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    senha.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+            
+            // Validar confirmação de senha
+            function validarSenhas() {
+                const senha = document.getElementById('senha').value;
+                const confirmarSenha = document.getElementById('confirmarSenha').value;
+                const erroDiv = document.getElementById('erro-confirmar-senha');
+                const confirmarInput = document.getElementById('confirmarSenha');
+                
+                if (confirmarSenha && senha !== confirmarSenha) {
+                    confirmarInput.classList.add('is-invalid');
+                    erroDiv.style.display = 'block';
+                    return false;
+                } else {
+                    confirmarInput.classList.remove('is-invalid');
+                    erroDiv.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            document.getElementById('confirmarSenha').addEventListener('input', validarSenhas);
+            document.getElementById('senha').addEventListener('input', validarSenhas);
+            
+            // Atualizar prévia em tempo real
+            function atualizarPrevia() {
+                const nome = document.getElementById('nome').value || 'Nome do Usuário';
+                const email = document.getElementById('email').value || 'email@mottu.com';
+                const perfil = document.getElementById('perfil').value || 'OPERADOR';
+                const ativo = document.getElementById('ativo').checked;
+                
+                // Atualizar avatar
+                document.getElementById('preview-avatar').textContent = nome.charAt(0).toUpperCase();
+                
+                // Atualizar informações
+                document.getElementById('preview-nome').textContent = nome;
+                document.getElementById('preview-email').textContent = email;
+                
+                // Atualizar perfil
+                const perfilTexto = {
+                    'ADMIN': 'Administrador',
+                    'OPERADOR': 'Operador', 
+                    'MANUTENCAO': 'Manutenção'
+                };
+                
+                const perfilBadge = document.getElementById('preview-perfil-badge');
+                document.getElementById('preview-perfil').textContent = perfilTexto[perfil] || 'Perfil';
+                
+                perfilBadge.className = 'badge ';
+                switch(perfil) {
+                    case 'ADMIN':
+                        perfilBadge.className += 'bg-danger';
+                        break;
+                    case 'OPERADOR':
+                        perfilBadge.className += 'bg-primary';
+                        break;
+                    case 'MANUTENCAO':
+                        perfilBadge.className += 'bg-warning';
+                        break;
+                    default:
+                        perfilBadge.className += 'bg-secondary';
+                }
+                
+                // Atualizar status
+                const statusBadge = document.getElementById('preview-status-badge');
+                const statusSpan = document.getElementById('preview-status');
+                const statusLabel = document.getElementById('status-label');
+                
+                if (ativo) {
+                    statusBadge.className = 'badge ms-2 bg-success';
+                    statusSpan.textContent = 'Ativo';
+                    statusLabel.textContent = 'Usuário Ativo';
+                } else {
+                    statusBadge.className = 'badge ms-2 bg-danger';
+                    statusSpan.textContent = 'Inativo';
+                    statusLabel.textContent = 'Usuário Inativo';
+                }
+            }
+            
+            // Event listeners para atualização em tempo real
+            document.getElementById('nome').addEventListener('input', atualizarPrevia);
+            document.getElementById('email').addEventListener('input', atualizarPrevia);
+            document.getElementById('perfil').addEventListener('change', atualizarPrevia);
+            document.getElementById('ativo').addEventListener('change', atualizarPrevia);
+            
+            // Inicializar prévia
+            document.addEventListener('DOMContentLoaded', atualizarPrevia);
+            
+            // Função para limpar formulário
+            function limparFormulario() {
+                if (confirm('Tem certeza que deseja limpar todos os campos?')) {
+                    document.querySelector('form').reset();
+                    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                    document.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+                    atualizarPrevia();
+                }
+            }
+            
+            // Validação no submit
+            document.querySelector('form').addEventListener('submit', function(e) {
+                if (!validarSenhas()) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
