@@ -48,17 +48,18 @@
         </dependency>
 
         <!-- Flyway (sem versão, Spring Boot gerencia) -->
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>11.12.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flywaydb</groupId>-->
+<!--            <artifactId>flyway-database-oracle</artifactId>-->
+<!--            <version>9.22.3</version>-->
+<!--        </dependency>-->
+
 
         <!-- Oracle JDBC -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
-            <version>21.12.0.0</version>
+            <version>23.3.0.23.09</version>
         </dependency>
 
         <!-- H2 para testes -->
@@ -87,19 +88,18 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
                 <configuration>
-                    <mainClass>com.mottu.MottuApiApplication</mainClass>
+                    <url>jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL</url>
+                    <user>rm558514</user>
+                    <password>030904</password>
+                    <driver>oracle.jdbc.OracleDriver</driver>
+                    <schemas>rm558514</schemas>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>
