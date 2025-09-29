@@ -53,7 +53,6 @@ com\mottu\controller\AuthController.class
 com\mottu\security\SecurityUtils.class
 com\mottu\entity\AlertaEvento.class
 com\mottu\validation\CustomValidation$PercentualBateriaValidator.class
-com\mottu\config\FlywayConfig.class
 com\mottu\validation\CustomValidation$NomePatioUnicoValidator.class
 com\mottu\validation\CustomValidation$PercentualBateriaValido.class
 com\mottu\validation\CustomValidation$ValidationUtils.class
