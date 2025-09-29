@@ -1,42 +1,31 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "Alerta_evento")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "ALERTA_EVENTO")
 public class AlertaEvento {
-    
+
     @Id
-    @Column(name = "id_alerta")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAlerta;
-    
-    @NotBlank(message = "Tipo de alerta é obrigatório")
-    @Size(max = 50, message = "Tipo de alerta deve ter no máximo 50 caracteres")
-    @Column(name = "tipo_alerta", length = 50)
+    @Column(name = "ID_ALERTA")
+    private Integer idAlerta;
+
+    @Column(name = "TIPO_ALERTA", length = 50)
     private String tipoAlerta;
-    
-    @NotNull(message = "Data de geração é obrigatória")
-    @Column(name = "data_geracao")
-    private LocalDateTime dataGeracao;
-    
-    @NotNull(message = "Moto é obrigatória")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_moto")
-    private Moto moto;
-    
-    @PrePersist
-    private void setDataGeracao() {
-        if (this.dataGeracao == null) {
-            this.dataGeracao = LocalDateTime.now();
-        }
-    }
+
+    @Column(name = "DATA_GERACAO")
+    private LocalDate dataGeracao;
+
+    @Column(name = "ID_MOTO")
+    private Integer idMoto;
+
+    public Integer getIdAlerta() { return idAlerta; }
+    public void setIdAlerta(Integer idAlerta) { this.idAlerta = idAlerta; }
+    public String getTipoAlerta() { return tipoAlerta; }
+    public void setTipoAlerta(String tipoAlerta) { this.tipoAlerta = tipoAlerta; }
+    public LocalDate getDataGeracao() { return dataGeracao; }
+    public void setDataGeracao(LocalDate dataGeracao) { this.dataGeracao = dataGeracao; }
+    public Integer getIdMoto() { return idMoto; }
+    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
 }

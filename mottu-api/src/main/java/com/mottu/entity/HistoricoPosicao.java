@@ -1,63 +1,48 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "Historico_posicao")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "HISTORICO_POSICAO")
 @IdClass(HistoricoPosicaoId.class)
 public class HistoricoPosicao {
-    
-    @Id
-    @Column(name = "data_atualizacao")
-    private LocalDateTime dataAtualizacao;
-    
-    @Id
-    @Column(name = "id_moto")
-    private Long idMoto;
-    
-    @NotNull(message = "Posição X é obrigatória")
-    @Column(name = "posicao_x", precision = 10, scale = 2)
-    private BigDecimal posicaoX;
-    
-    @NotNull(message = "Posição Y é obrigatória")
-    @Column(name = "posicao_y", precision = 10, scale = 2)
-    private BigDecimal posicaoY;
-    
-    @NotNull(message = "Acurácia é obrigatória")
-    @DecimalMin(value = "0.0", message = "Acurácia deve ser positiva")
-    @Column(name = "acuracia_localizacao", precision = 5, scale = 2)
-    private BigDecimal acuraciaLocalizacao;
-    
-    @NotBlank(message = "Origem detectada é obrigatória")
-    @Size(max = 20, message = "Origem detectada deve ter no máximo 20 caracteres")
-    @Column(name = "origem_detectada", length = 20)
-    private String origemDetectada;
-    
-    @NotBlank(message = "Status no momento é obrigatório")
-    @Size(max = 20, message = "Status no momento deve ter no máximo 20 caracteres")
-    @Column(name = "status_no_momento", length = 20)
-    private String statusNoMomento;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_moto", insertable = false, updatable = false)
-    private Moto moto;
-}
 
-// Classe de ID composta
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class HistoricoPosicaoId implements Serializable {
-    private LocalDateTime dataAtualizacao;
-    private Long idMoto;
+    @Id
+    @Column(name = "DATA_ATUALIZACAO")
+    private LocalDate dataAtualizacao;
+
+    @Id
+    @Column(name = "ID_MOTO")
+    private Integer idMoto;
+
+    @Column(name = "POSICAO_X")
+    private Double posicaoX;
+
+    @Column(name = "POSICAO_Y")
+    private Double posicaoY;
+
+    @Column(name = "ACURACIA_LOCALIZACAO")
+    private Double acuraciaLocalizacao;
+
+    @Column(name = "ORIGEM_DETECTADA", length = 20)
+    private String origemDetectada;
+
+    @Column(name = "STATUS_NO_MOMENTO", length = 20)
+    private String statusNoMomento;
+
+    public LocalDate getDataAtualizacao() { return dataAtualizacao; }
+    public void setDataAtualizacao(LocalDate dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
+    public Integer getIdMoto() { return idMoto; }
+    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
+    public Double getPosicaoX() { return posicaoX; }
+    public void setPosicaoX(Double posicaoX) { this.posicaoX = posicaoX; }
+    public Double getPosicaoY() { return posicaoY; }
+    public void setPosicaoY(Double posicaoY) { this.posicaoY = posicaoY; }
+    public Double getAcuraciaLocalizacao() { return acuraciaLocalizacao; }
+    public void setAcuraciaLocalizacao(Double acuraciaLocalizacao) { this.acuraciaLocalizacao = acuraciaLocalizacao; }
+    public String getOrigemDetectada() { return origemDetectada; }
+    public void setOrigemDetectada(String origemDetectada) { this.origemDetectada = origemDetectada; }
+    public String getStatusNoMomento() { return statusNoMomento; }
+    public void setStatusNoMomento(String statusNoMomento) { this.statusNoMomento = statusNoMomento; }
 }

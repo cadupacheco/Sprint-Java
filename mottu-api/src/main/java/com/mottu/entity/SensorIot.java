@@ -1,40 +1,36 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Sensor_iot")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "SENSOR_IOT")
 public class SensorIot {
-    
+
     @Id
-    @Column(name = "id_sensor_iot")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idSensorIot;
-    
-    @NotBlank(message = "Tipo do sensor é obrigatório")
-    @Size(max = 20, message = "Tipo do sensor deve ter no máximo 20 caracteres")
-    @Column(name = "tipo_sensor", length = 20)
+    @Column(name = "ID_SENSOR_IOT")
+    private Integer idSensorIot;
+
+    @Column(name = "TIPO_SENSOR", length = 20)
     private String tipoSensor;
-    
-    @NotNull(message = "Data de transmissão é obrigatória")
-    @Column(name = "data_transmissao")
+
+    @Column(name = "DATA_TRANSMISSAO")
     private LocalDate dataTransmissao;
-    
-    @NotNull(message = "Percentual da bateria é obrigatório")
-    @DecimalMin(value = "0.0", message = "Percentual da bateria deve ser positivo")
-    @DecimalMax(value = "100.0", message = "Percentual da bateria não pode exceder 100%")
-    @Column(name = "bateria_percentual", precision = 5, scale = 2)
-    private BigDecimal bateriaPercentual;
-    
-    @OneToOne(mappedBy = "sensorIot", fetch = FetchType.LAZY)
-    private Moto moto;
+
+    @Column(name = "BATERIA_PERCENTUAL")
+    private Double bateriaPercentual;
+
+    @Column(name = "ID_MOTO")
+    private Integer idMoto;
+
+    public Integer getIdSensorIot() { return idSensorIot; }
+    public void setIdSensorIot(Integer idSensorIot) { this.idSensorIot = idSensorIot; }
+    public String getTipoSensor() { return tipoSensor; }
+    public void setTipoSensor(String tipoSensor) { this.tipoSensor = tipoSensor; }
+    public LocalDate getDataTransmissao() { return dataTransmissao; }
+    public void setDataTransmissao(LocalDate dataTransmissao) { this.dataTransmissao = dataTransmissao; }
+    public Double getBateriaPercentual() { return bateriaPercentual; }
+    public void setBateriaPercentual(Double bateriaPercentual) { this.bateriaPercentual = bateriaPercentual; }
+    public Integer getIdMoto() { return idMoto; }
+    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
 }
