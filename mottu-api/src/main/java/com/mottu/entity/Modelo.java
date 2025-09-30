@@ -1,14 +1,16 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "MODELO")
+@Data
 public class Modelo {
 
     @Id
     @Column(name = "ID_MODELO")
-    private Integer idModelo;
+    private Integer idModelo; // INTEGER no banco
 
     @Column(name = "FABRICANTE", length = 50)
     private String fabricante;
@@ -21,15 +23,4 @@ public class Modelo {
 
     @Column(name = "TIPO", length = 30)
     private String tipo;
-
-    public Integer getIdModelo() { return idModelo; }
-    public void setIdModelo(Integer idModelo) { this.idModelo = idModelo; }
-    public String getFabricante() { return fabricante; }
-    public void setFabricante(String fabricante) { this.fabricante = fabricante; }
-    public String getNomeModelo() { return nomeModelo; }
-    public void setNomeModelo(String nomeModelo) { this.nomeModelo = nomeModelo; }
-    public Integer getCilindrada() { return cilindrada; }
-    public void setCilindrada(Integer cilindrada) { this.cilindrada = cilindrada; }
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
 }

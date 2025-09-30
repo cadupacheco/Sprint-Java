@@ -1,10 +1,16 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "USUARIO_SISTEMA")
-public class UsuarioSistema {
+@Data
+public class UsuarioSistema implements UserDetails {
 
     @Id
     @Column(name = "ID_USUARIO")
@@ -16,15 +22,37 @@ public class UsuarioSistema {
     @Column(name = "EMAIL", length = 100)
     private String email;
 
-    @Column(name = "SENHA", length = 20)
+    @Column(name = "SENHA", length = 255)
     private String senha;
 
-    public Integer getIdUsuario() { return idUsuario; }
-    public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
+    @Column(name = "ATIVO")
+    private Boolean ativo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PERFIL")
+    private PerfilUsuario perfil;
+
+    // Métodos do UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getPassword() { return senha; }
+
+    @Override
+    public String getUsername() { return email; }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return ativo != null && ativo; }
 }

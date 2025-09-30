@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class AlertaEventoService {
     public List<AlertaEvento> listarTodos() {
         return alertaEventoRepository.findAll();
     }
-    
+
     @Transactional(readOnly = true)
     public Page<AlertaEvento> listarTodos(Pageable pageable) {
         return alertaEventoRepository.findAll(pageable);
@@ -33,69 +33,62 @@ public class AlertaEventoService {
     public Optional<AlertaEvento> buscarPorId(Long id) {
         return alertaEventoRepository.findById(id);
     }
-    
+
     @Transactional(readOnly = true)
     public List<AlertaEvento> buscarPorTipoAlerta(String tipoAlerta) {
         return alertaEventoRepository.findByTipoAlerta(tipoAlerta);
     }
-    
+
     @Transactional(readOnly = true)
     public List<AlertaEvento> buscarPorMoto(Long motoId) {
-        return alertaEventoRepository.findByMoto_IdMoto(motoId);
+        return alertaEventoRepository.findByIdMoto(motoId.intValue());
     }
-    
+
     @Transactional(readOnly = true)
-    public List<AlertaEvento> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
+    public List<AlertaEvento> buscarPorPeriodo(LocalDate inicio, LocalDate fim) {
         return alertaEventoRepository.findByDataGeracaoBetween(inicio, fim);
     }
-    
+
     @Transactional(readOnly = true)
     public List<AlertaEvento> buscarAlertasRecentes(int dias) {
-        LocalDateTime dataLimite = LocalDateTime.now().minusDays(dias);
+        LocalDate dataLimite = LocalDate.now().minusDays(dias); // LocalDate, não LocalDateTime
         return alertaEventoRepository.findByDataGeracaoAfter(dataLimite);
     }
-    
+
     @Transactional(readOnly = true)
     public List<AlertaEvento> buscarAlertasDeHoje() {
-        LocalDateTime inicioHoje = LocalDateTime.now().toLocalDate().atStartOfDay();
-        LocalDateTime fimHoje = inicioHoje.plusDays(1).minusSeconds(1);
-        return buscarPorPeriodo(inicioHoje, fimHoje);
+        LocalDate hoje = LocalDate.now(); // LocalDate, não LocalDateTime
+        return buscarPorPeriodo(hoje, hoje);
     }
-    
+
     @Transactional(readOnly = true)
     public long contarAlertasPorTipo(String tipoAlerta) {
         return alertaEventoRepository.countByTipoAlerta(tipoAlerta);
     }
-    
+
     @Transactional(readOnly = true)
     public long contarAlertasPorMoto(Long motoId) {
-        return alertaEventoRepository.countByMoto_IdMoto(motoId);
+        return alertaEventoRepository.countByIdMoto(motoId.intValue());
     }
 
     public AlertaEvento salvar(AlertaEvento alerta) {
         validarAlerta(alerta);
         return alertaEventoRepository.save(alerta);
     }
-    
+
     public AlertaEvento criarAlerta(String tipoAlerta, Long motoId) {
         AlertaEvento alerta = AlertaEvento.builder()
                 .tipoAlerta(tipoAlerta)
-                .dataGeracao(LocalDateTime.now())
+                .dataGeracao(LocalDate.now()) // LocalDate, não LocalDateTime
+                .idMoto(motoId.intValue())
                 .build();
-        
-        // Buscar a moto pelo ID e associar
-        // Nota: Aqui você precisaria injetar MotoService ou MotoRepository
-        // Por simplicidade, estou deixando que seja definido externamente
-        
+
         return salvar(alerta);
     }
-    
+
     public void processarAlertas() {
-        // Método para processar alertas pendentes
-        // Implementar lógica de negócio específica
         List<AlertaEvento> alertasRecentes = buscarAlertasRecentes(1);
-        
-        // Exemplo: agrupar por tipo e gerar relatórios
+
         alertasRecentes.stream()
                 .collect(java.util.stream.Collectors.groupingBy(AlertaEvento::getTipoAlerta))
                 .forEach((tipo, alertas) -> {
@@ -109,26 +102,23 @@ public class AlertaEventoService {
         }
         alertaEventoRepository.deleteById(id);
     }
-    
+
     public void deletarAlertasAntigos(int diasParaManterAlertas) {
-        LocalDateTime dataLimite = LocalDateTime.now().minusDays(diasParaManterAlertas);
+        LocalDate dataLimite = LocalDate.now().minusDays(diasParaManterAlertas); // LocalDate, não LocalDateTime
         alertaEventoRepository.deleteByDataGeracaoBefore(dataLimite);
     }
-    
+
     private void validarAlerta(AlertaEvento alerta) {
-        // Validar tipo do alerta
         if (alerta.getTipoAlerta() == null || alerta.getTipoAlerta().trim().isEmpty()) {
             throw new RuntimeException("Tipo de alerta é obrigatório");
         }
-        
-        // Validar moto
-        if (alerta.getMoto() == null) {
-            throw new RuntimeException("Moto é obrigatória para o alerta");
+
+        if (alerta.getIdMoto() == null) {
+            throw new RuntimeException("ID da moto é obrigatório para o alerta");
         }
-        
-        // Definir data de geração se não foi definida
+
         if (alerta.getDataGeracao() == null) {
-            alerta.setDataGeracao(LocalDateTime.now());
+            alerta.setDataGeracao(LocalDate.now()); // LocalDate, não LocalDateTime
         }
     }
 }

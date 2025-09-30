@@ -1,10 +1,12 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "MOTO")
+@Data
 public class Moto {
 
     @Id
@@ -23,34 +25,18 @@ public class Moto {
     @Column(name = "STATUS", length = 20)
     private String status;
 
-    @Column(name = "MODELO_ID_MODELO")
-    private Integer modeloId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODELO_ID_MODELO")
+    private Modelo modelo;
 
-    @Column(name = "ID_PATIO")
-    private Integer idPatio;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PATIO")
+    private Patio patio;
 
-    @Column(name = "ID_SENSOR_IOT")
-    private Integer idSensorIot;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_SENSOR_IOT")
+    private SensorIot sensorIot;
 
     @Column(name = "DATA_ATUALIZACAO")
     private LocalDate dataAtualizacao;
-
-    public Integer getIdMoto() { return idMoto; }
-    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
-    public String getPlaca() { return placa; }
-    public void setPlaca(String placa) { this.placa = placa; }
-    public String getChassi() { return chassi; }
-    public void setChassi(String chassi) { this.chassi = chassi; }
-    public Integer getAnoFabricacao() { return anoFabricacao; }
-    public void setAnoFabricacao(Integer anoFabricacao) { this.anoFabricacao = anoFabricacao; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public Integer getModeloId() { return modeloId; }
-    public void setModeloId(Integer modeloId) { this.modeloId = modeloId; }
-    public Integer getIdPatio() { return idPatio; }
-    public void setIdPatio(Integer idPatio) { this.idPatio = idPatio; }
-    public Integer getIdSensorIot() { return idSensorIot; }
-    public void setIdSensorIot(Integer idSensorIot) { this.idSensorIot = idSensorIot; }
-    public LocalDate getDataAtualizacao() { return dataAtualizacao; }
-    public void setDataAtualizacao(LocalDate dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
 }

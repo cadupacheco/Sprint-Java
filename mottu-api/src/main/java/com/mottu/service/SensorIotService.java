@@ -24,7 +24,7 @@ public class SensorIotService {
     public List<SensorIot> listarTodos() {
         return sensorIotRepository.findAll();
     }
-    
+
     @Transactional(readOnly = true)
     public Page<SensorIot> listarTodos(Pageable pageable) {
         return sensorIotRepository.findAll(pageable);
@@ -32,37 +32,37 @@ public class SensorIotService {
 
     @Transactional(readOnly = true)
     public Optional<SensorIot> buscarPorId(Long id) {
-        return sensorIotRepository.findById(id);
+        return sensorIotRepository.findById(id.intValue()); // Converte Long->Integer
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarPorTipo(String tipo) {
         return sensorIotRepository.findByTipoSensor(tipo);
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarPorDataTransmissao(LocalDate data) {
         return sensorIotRepository.findByDataTransmissao(data);
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarPorFaixaBateria(BigDecimal min, BigDecimal max) {
         return sensorIotRepository.findByBateriaPercentualBetween(min, max);
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarSensoresComBateriaBaixa(BigDecimal limite) {
         return sensorIotRepository.findByBateriaPercentualLessThan(limite);
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarSensoresSemMoto() {
         return sensorIotRepository.findSensoresSemMoto();
     }
-    
+
     @Transactional(readOnly = true)
     public List<SensorIot> buscarSensoresAtivos() {
-        LocalDate dataLimite = LocalDate.now().minusDays(7); // Considerando ativos os que transmitiram nos últimos 7 dias
+        LocalDate dataLimite = LocalDate.now().minusDays(7);
         return sensorIotRepository.findByDataTransmissaoAfter(dataLimite);
     }
 
@@ -70,18 +70,18 @@ public class SensorIotService {
         validarSensor(sensor);
         return sensorIotRepository.save(sensor);
     }
-    
+
     public SensorIot atualizarBateria(Long sensorId, BigDecimal novoPercentual) {
         Optional<SensorIot> sensorOpt = buscarPorId(sensorId);
         if (sensorOpt.isPresent()) {
             SensorIot sensor = sensorOpt.get();
-            sensor.setBateriaPercentual(novoPercentual);
+            sensor.setBateriaPercentual(novoPercentual.doubleValue()); // Converte BigDecimal->Double
             sensor.setDataTransmissao(LocalDate.now());
             return sensorIotRepository.save(sensor);
         }
         throw new RuntimeException("Sensor não encontrado com ID: " + sensorId);
     }
-    
+
     public SensorIot atualizarTransmissao(Long sensorId) {
         Optional<SensorIot> sensorOpt = buscarPorId(sensorId);
         if (sensorOpt.isPresent()) {
@@ -93,26 +93,23 @@ public class SensorIotService {
     }
 
     public void deletar(Long id) {
-        if (!sensorIotRepository.existsById(id)) {
+        if (!sensorIotRepository.existsById(id.intValue())) {
             throw new RuntimeException("Sensor não encontrado com ID: " + id);
         }
-        sensorIotRepository.deleteById(id);
+        sensorIotRepository.deleteById(id.intValue());
     }
-    
+
     private void validarSensor(SensorIot sensor) {
-        // Validar tipo do sensor
         if (sensor.getTipoSensor() == null || sensor.getTipoSensor().trim().isEmpty()) {
             throw new RuntimeException("Tipo do sensor é obrigatório");
         }
-        
-        // Validar percentual da bateria
-        if (sensor.getBateriaPercentual() == null || 
-            sensor.getBateriaPercentual().compareTo(BigDecimal.ZERO) < 0 || 
-            sensor.getBateriaPercentual().compareTo(new BigDecimal("100")) > 0) {
+
+        if (sensor.getBateriaPercentual() == null ||
+                sensor.getBateriaPercentual() < 0 ||
+                sensor.getBateriaPercentual() > 100) {
             throw new RuntimeException("Percentual da bateria deve estar entre 0 e 100");
         }
-        
-        // Validar data de transmissão
+
         if (sensor.getDataTransmissao() == null) {
             sensor.setDataTransmissao(LocalDate.now());
         }

@@ -1,10 +1,12 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "SENSOR_IOT")
+@Data
 public class SensorIot {
 
     @Id
@@ -17,20 +19,9 @@ public class SensorIot {
     @Column(name = "DATA_TRANSMISSAO")
     private LocalDate dataTransmissao;
 
-    @Column(name = "BATERIA_PERCENTUAL")
+    @Column(name = "BATERIA_PERCENTUAL") // REMOVIDO: precision/scale se tiver
     private Double bateriaPercentual;
 
     @Column(name = "ID_MOTO")
     private Integer idMoto;
-
-    public Integer getIdSensorIot() { return idSensorIot; }
-    public void setIdSensorIot(Integer idSensorIot) { this.idSensorIot = idSensorIot; }
-    public String getTipoSensor() { return tipoSensor; }
-    public void setTipoSensor(String tipoSensor) { this.tipoSensor = tipoSensor; }
-    public LocalDate getDataTransmissao() { return dataTransmissao; }
-    public void setDataTransmissao(LocalDate dataTransmissao) { this.dataTransmissao = dataTransmissao; }
-    public Double getBateriaPercentual() { return bateriaPercentual; }
-    public void setBateriaPercentual(Double bateriaPercentual) { this.bateriaPercentual = bateriaPercentual; }
-    public Integer getIdMoto() { return idMoto; }
-    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
 }

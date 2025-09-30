@@ -27,8 +27,8 @@ public class AuthController {
     @Autowired
     private UsuarioSistemaService usuarioService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+        @Autowired
+        private AuthenticationManager authenticationManager;
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
@@ -60,17 +60,14 @@ public class AuthController {
         }
 
         try {
-            // Autenticar usuario
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getSenha());
 
             Authentication authentication = authenticationManager.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Salvar "lembrar-me" se necessário
             if (loginDTO.getLembrarMe() != null && loginDTO.getLembrarMe()) {
-                // Implementar lógica de "remember me" se necessário
-                request.getSession().setMaxInactiveInterval(30 * 24 * 60 * 60); // 30 dias
+                request.getSession().setMaxInactiveInterval(30 * 24 * 60 * 60);
             }
 
             redirectAttributes.addFlashAttribute("success", "Login realizado com sucesso!");
@@ -138,10 +135,7 @@ public class AuthController {
 
         try {
             UsuarioSistema usuario = (UsuarioSistema) usuarioService.loadUserByUsername(principal.getName());
-
-            // Validar senha atual (implementar verificação se necessário)
-            // Por simplicidade, apenas alterando a senha
-            usuarioService.alterarSenha(usuario.getIdUsuario(), novaSenha);
+            usuarioService.alterarSenha(usuario.getIdUsuario().longValue(), novaSenha);
 
             redirectAttributes.addFlashAttribute("success", "Senha alterada com sucesso!");
             return "redirect:/auth/profile";
@@ -152,7 +146,6 @@ public class AuthController {
         }
     }
 
-    // API endpoints para autenticação
     @ResponseBody
     @PostMapping("/api/login")
     public java.util.Map<String, Object> apiLogin(@RequestBody LoginDTO loginDTO) {

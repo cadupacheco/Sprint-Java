@@ -1,31 +1,34 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "ALERTA_EVENTO")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AlertaEvento {
 
     @Id
     @Column(name = "ID_ALERTA")
-    private Integer idAlerta;
+    private Integer idAlerta; // INTEGER no banco
 
     @Column(name = "TIPO_ALERTA", length = 50)
     private String tipoAlerta;
 
     @Column(name = "DATA_GERACAO")
-    private LocalDate dataGeracao;
+    private LocalDate dataGeracao; // DATE no banco
 
     @Column(name = "ID_MOTO")
-    private Integer idMoto;
+    private Integer idMoto; // INTEGER no banco
 
-    public Integer getIdAlerta() { return idAlerta; }
-    public void setIdAlerta(Integer idAlerta) { this.idAlerta = idAlerta; }
-    public String getTipoAlerta() { return tipoAlerta; }
-    public void setTipoAlerta(String tipoAlerta) { this.tipoAlerta = tipoAlerta; }
-    public LocalDate getDataGeracao() { return dataGeracao; }
-    public void setDataGeracao(LocalDate dataGeracao) { this.dataGeracao = dataGeracao; }
-    public Integer getIdMoto() { return idMoto; }
-    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
+    public Object getMoto() {
+        return null;
+    }
 }

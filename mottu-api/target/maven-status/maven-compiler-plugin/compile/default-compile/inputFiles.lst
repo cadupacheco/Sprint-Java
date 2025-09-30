@@ -21,6 +21,7 @@ C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mot
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\service\SensorIotService.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\entity\PerfilUsuario.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\service\MotoService.java
+C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\controller\HomeController.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\dto\LoginDTO.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\repository\ModeloRepository.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\controller\HistoricoPosicaoController.java
@@ -31,6 +32,7 @@ C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mot
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\controller\PatioController.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\controller\UsuarioSistemaController.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\service\AlertaEventoService.java
+C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\entity\HistoricoPosicaoId.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\controller\AlertaEventoController.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\repository\SensorIotRepository.java
 C:\Users\Pedro Ladeira\OneDrive\Documentos\fiap 2025\Challenge\java\sprint 3\mottu-api\src\main\java\com\mottu\repository\UsuarioSistemaRepository.java

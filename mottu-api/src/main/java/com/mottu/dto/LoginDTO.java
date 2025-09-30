@@ -1,21 +1,27 @@
 package com.mottu.dto;
 
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class LoginDTO {
-    
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Email deve ser válido")
+
+    @NotBlank(message = "E-mail é obrigatório")
+    @Email(message = "E-mail inválido")
     private String email;
-    
+
     @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 6, max = 20, message = "Senha deve ter entre 6 e 20 caracteres")
+    @Size(min = 4, max = 60, message = "A senha deve ter entre 4 e 60 caracteres")
     private String senha;
-    
+
+    @Builder.Default
     private Boolean lembrarMe = false;
 }

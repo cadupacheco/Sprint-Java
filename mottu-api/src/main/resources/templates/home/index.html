@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${titulo}">Mottu - Início</title>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}"/>
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h1 class="mb-4">Mottu - Sistema de Gerenciamento</h1>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Autenticação</h5>
+                    <p class="card-text">Acesse a tela de login para entrar no sistema.</p>
+                    <a class="btn btn-primary" th:href="@{/login}">Ir para Login</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Dashboard</h5>
+                    <p class="card-text">Visão geral do sistema.</p>
+                    <a class="btn btn-outline-primary" th:href="@{/dashboard}">Abrir Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cadastros -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Modelos</h5>
+                    <p class="card-text">Gerencie os modelos de motos.</p>
+                    <a class="btn btn-outline-secondary" th:href="@{/modelos}">Abrir Modelos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Motos</h5>
+                    <p class="card-text">Gerencie o cadastro de motos.</p>
+                    <a class="btn btn-outline-secondary" th:href="@{/motos}">Abrir Motos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Pátios</h5>
+                    <p class="card-text">Gerencie pátios e ocupação.</p>
+                    <a class="btn btn-outline-secondary" th:href="@{/patios}">Abrir Pátios</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Administração -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Usuários</h5>
+                    <p class="card-text">Gerencie usuários e perfis de acesso.</p>
+                    <a class="btn btn-outline-dark" th:href="@{/usuarios}">Abrir Usuários</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- IoT e Monitoramento -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Sensores IoT</h5>
+                    <p class="card-text">Gerencie sensores e medições.</p>
+                    <a class="btn btn-outline-success" th:href="@{/sensores}">Abrir Sensores</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Histórico</h5>
+                    <p class="card-text">Veja eventos e atividades.</p>
+                    <a class="btn btn-outline-info" th:href="@{/historico}">Abrir Histórico</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Alertas</h5>
+                    <p class="card-text">Monitore alertas e ocorrências.</p>
+                    <a class="btn btn-outline-danger" th:href="@{/alertas}">Abrir Alertas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script th:src="@{/static/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

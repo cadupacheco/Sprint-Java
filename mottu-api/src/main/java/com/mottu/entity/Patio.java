@@ -1,14 +1,17 @@
 package com.mottu.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "PATIO")
+@Data
 public class Patio {
 
     @Id
     @Column(name = "ID_PATIO")
-    private Integer idPatio;
+    private Integer idPatio; // INTEGER no banco
 
     @Column(name = "NOME_PATIO", length = 50)
     private String nomePatio;
@@ -16,20 +19,9 @@ public class Patio {
     @Column(name = "LOCALIZACAO_PATIO", length = 50)
     private String localizacaoPatio;
 
-    @Column(name = "AREA_TOTAL")
-    private Double areaTotal;
+    @Column(name = "AREA_TOTAL", precision = 10, scale = 2)
+    private BigDecimal areaTotal; // NUMBER(10,2) no banco
 
     @Column(name = "CAPACIDADE_MAXIMA")
     private Integer capacidadeMaxima;
-
-    public Integer getIdPatio() { return idPatio; }
-    public void setIdPatio(Integer idPatio) { this.idPatio = idPatio; }
-    public String getNomePatio() { return nomePatio; }
-    public void setNomePatio(String nomePatio) { this.nomePatio = nomePatio; }
-    public String getLocalizacaoPatio() { return localizacaoPatio; }
-    public void setLocalizacaoPatio(String localizacaoPatio) { this.localizacaoPatio = localizacaoPatio; }
-    public Double getAreaTotal() { return areaTotal; }
-    public void setAreaTotal(Double areaTotal) { this.areaTotal = areaTotal; }
-    public Integer getCapacidadeMaxima() { return capacidadeMaxima; }
-    public void setCapacidadeMaxima(Integer capacidadeMaxima) { this.capacidadeMaxima = capacidadeMaxima; }
 }

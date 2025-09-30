@@ -23,7 +23,7 @@ public class PatioService {
     public List<Patio> listarTodos() {
         return patioRepository.findAll();
     }
-    
+
     @Transactional(readOnly = true)
     public Page<Patio> listarTodos(Pageable pageable) {
         return patioRepository.findAll(pageable);
@@ -31,50 +31,50 @@ public class PatioService {
 
     @Transactional(readOnly = true)
     public Optional<Patio> buscarPorId(Long id) {
-        return patioRepository.findById(id);
+        return patioRepository.findById(id.intValue()); // Converte Long->Integer
     }
-    
+
     @Transactional(readOnly = true)
     public Optional<Patio> buscarPorNome(String nomePatio) {
         return patioRepository.findByNomePatio(nomePatio);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Patio> buscarPorLocalizacao(String localizacao) {
         return patioRepository.findByLocalizacaoPatio(localizacao);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Patio> buscarPorLocalizacaoContendo(String localizacao) {
         return patioRepository.findByLocalizacaoPatioContainingIgnoreCase(localizacao);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Patio> buscarPorCapacidadeMinima(Integer capacidadeMinima) {
         return patioRepository.findByCapacidadeMaximaGreaterThanEqual(capacidadeMinima);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Patio> buscarPorFaixaArea(BigDecimal areaMin, BigDecimal areaMax) {
         return patioRepository.findByAreaTotalBetween(areaMin, areaMax);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Patio> buscarPatiosComEspacoDisponivel() {
         return patioRepository.findPatiosComEspacoDisponivel();
     }
-    
+
     @Transactional(readOnly = true)
     public long contarMotosPorPatio(Long patioId) {
-        return patioRepository.countMotosByPatioId(patioId);
+        return patioRepository.countMotosByPatioId(patioId.intValue()); // Converte Long->Integer
     }
-    
+
     @Transactional(readOnly = true)
     public Double calcularTaxaOcupacao(Long patioId) {
-        Double taxa = patioRepository.calcularTaxaOcupacao(patioId);
-        return taxa != null ? taxa : 0.0;
+        BigDecimal taxa = patioRepository.calcularTaxaOcupacao(patioId.intValue()); // Repository retorna BigDecimal
+        return taxa != null ? taxa.doubleValue() : 0.0; // Converte BigDecimal->Double
     }
-    
+
     @Transactional(readOnly = true)
     public Integer calcularEspacosDisponiveis(Long patioId) {
         Optional<Patio> patio = buscarPorId(patioId);
@@ -91,32 +91,29 @@ public class PatioService {
     }
 
     public void deletar(Long id) {
-        if (!patioRepository.existsById(id)) {
+        if (!patioRepository.existsById(id.intValue())) {
             throw new RuntimeException("Pátio não encontrado com ID: " + id);
         }
-        
-        // Verificar se há motos no pátio
+
         long motosNoPatio = contarMotosPorPatio(id);
         if (motosNoPatio > 0) {
             throw new RuntimeException("Não é possível deletar o pátio. Existem " + motosNoPatio + " motos no pátio.");
         }
-        
-        patioRepository.deleteById(id);
+
+        patioRepository.deleteById(id.intValue());
     }
-    
+
     private void validarPatio(Patio patio) {
-        // Validar nome único (apenas para novos pátios ou mudança de nome)
-        if (patio.getIdPatio() == null || !patio.getNomePatio().equals(buscarPorId(patio.getIdPatio()).map(Patio::getNomePatio).orElse(null))) {
+        if (patio.getIdPatio() == null || !patio.getNomePatio().equals(buscarPorId(patio.getIdPatio().longValue()).map(Patio::getNomePatio).orElse(null))) {
             if (buscarPorNome(patio.getNomePatio()).isPresent()) {
                 throw new RuntimeException("Já existe um pátio com este nome: " + patio.getNomePatio());
             }
         }
-        
-        // Validar capacidade e área
+
         if (patio.getCapacidadeMaxima() <= 0) {
             throw new RuntimeException("Capacidade máxima deve ser um valor positivo");
         }
-        
+
         if (patio.getAreaTotal().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Área total deve ser um valor positivo");
         }
