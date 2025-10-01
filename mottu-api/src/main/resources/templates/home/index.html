@@ -2,110 +2,58 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title th:text="${titulo}">Mottu - Início</title>
-    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/home.css}"/>
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <h1 class="mb-4">Mottu - Sistema de Gerenciamento</h1>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Autenticação</h5>
-                    <p class="card-text">Acesse a tela de login para entrar no sistema.</p>
-                    <a class="btn btn-primary" th:href="@{/login}">Ir para Login</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Dashboard</h5>
-                    <p class="card-text">Visão geral do sistema.</p>
-                    <a class="btn btn-outline-primary" th:href="@{/dashboard}">Abrir Dashboard</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cadastros -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Modelos</h5>
-                    <p class="card-text">Gerencie os modelos de motos.</p>
-                    <a class="btn btn-outline-secondary" th:href="@{/modelos}">Abrir Modelos</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Motos</h5>
-                    <p class="card-text">Gerencie o cadastro de motos.</p>
-                    <a class="btn btn-outline-secondary" th:href="@{/motos}">Abrir Motos</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Pátios</h5>
-                    <p class="card-text">Gerencie pátios e ocupação.</p>
-                    <a class="btn btn-outline-secondary" th:href="@{/patios}">Abrir Pátios</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Administração -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Usuários</h5>
-                    <p class="card-text">Gerencie usuários e perfis de acesso.</p>
-                    <a class="btn btn-outline-dark" th:href="@{/usuarios}">Abrir Usuários</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- IoT e Monitoramento -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Sensores IoT</h5>
-                    <p class="card-text">Gerencie sensores e medições.</p>
-                    <a class="btn btn-outline-success" th:href="@{/sensores}">Abrir Sensores</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Histórico</h5>
-                    <p class="card-text">Veja eventos e atividades.</p>
-                    <a class="btn btn-outline-info" th:href="@{/historico}">Abrir Histórico</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Alertas</h5>
-                    <p class="card-text">Monitore alertas e ocorrências.</p>
-                    <a class="btn btn-outline-danger" th:href="@{/alertas}">Abrir Alertas</a>
-                </div>
-            </div>
-        </div>
-
+<body>
+<header class="topbar">
+    <div class="container">
+        <h1>Mottu</h1>
+        <nav class="menu">
+            <a th:href="@{/home}">Início</a>
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+        </nav>
     </div>
-</div>
+</header>
 
-<script th:src="@{/static/js/bootstrap.bundle.min.js}"></script>
+<main class="container">
+    <section class="grid">
+        <a class="card link" th:href="@{/login}">
+            <h3>Autenticação</h3><p>Acesse a tela de login.</p><span class="pill">/login</span>
+        </a>
+        <a class="card link" th:href="@{/dashboard}">
+            <h3>Dashboard</h3><p>Visão geral do sistema.</p><span class="pill">/dashboard</span>
+        </a>
+        <a class="card link" th:href="@{/modelos}">
+            <h3>Modelos</h3><p>Gerencie modelos de motos.</p><span class="pill">/modelos</span>
+        </a>
+        <a class="card link" th:href="@{/motos}">
+            <h3>Motos</h3><p>CRUD de motos.</p><span class="pill">/motos</span>
+        </a>
+        <a class="card link" th:href="@{/patios}">
+            <h3>Pátios</h3><p>Gestão de pátios e ocupação.</p><span class="pill">/patios</span>
+        </a>
+        <a class="card link" th:href="@{/usuarios}">
+            <h3>Usuários</h3><p>Gestão de usuários e perfis.</p><span class="pill">/usuarios</span>
+        </a>
+        <a class="card link" th:href="@{/sensores}">
+            <h3>Sensores IoT</h3><p>Cadastro e monitoramento.</p><span class="pill">/sensores</span>
+        </a>
+        <a class="card link" th:href="@{/historico}">
+            <h3>Histórico</h3><p>Eventos e atividades.</p><span class="pill">/historico</span>
+        </a>
+        <a class="card link" th:href="@{/alertas}">
+            <h3>Alertas</h3><p>Monitoramento de alertas.</p><span class="pill">/alertas</span>
+        </a>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <small>© 2025 Mottu • Sistema de Gerenciamento</small>
+    </div>
+</footer>
 </body>
 </html>
