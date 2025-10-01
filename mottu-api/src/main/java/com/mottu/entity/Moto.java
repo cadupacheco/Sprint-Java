@@ -3,6 +3,7 @@ package com.mottu.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "MOTO")
@@ -11,6 +12,7 @@ public class Moto {
 
     @Id
     @Column(name = "ID_MOTO")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idMoto;
 
     @Column(name = "PLACA", length = 10)
@@ -39,4 +41,10 @@ public class Moto {
 
     @Column(name = "DATA_ATUALIZACAO")
     private LocalDate dataAtualizacao;
+
+    @OneToMany(mappedBy = "id.moto", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<HistoricoPosicao> historicos;
+
+    @OneToMany(mappedBy = "moto", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AlertaEvento> alertas;
 }

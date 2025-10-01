@@ -25,10 +25,7 @@ public class AlertaEvento {
     @Column(name = "DATA_GERACAO")
     private LocalDate dataGeracao; // DATE no banco
 
-    @Column(name = "ID_MOTO")
-    private Integer idMoto; // INTEGER no banco
-
-    public Object getMoto() {
-        return null;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_MOTO", referencedColumnName = "ID_MOTO")
+    private Moto moto;
 }

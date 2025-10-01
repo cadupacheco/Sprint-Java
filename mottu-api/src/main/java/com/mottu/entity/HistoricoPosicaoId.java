@@ -1,25 +1,30 @@
 package com.mottu.entity;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Embeddable
 public class HistoricoPosicaoId implements Serializable {
+    @Column(name = "DATA_ATUALIZACAO")
+    private LocalDate dataAtualizacao;
 
-    private LocalDate dataAtualizacao; // DATE no banco
-    private Integer idMoto; // INTEGER no banco
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_MOTO", referencedColumnName = "ID_MOTO")
+    private Moto moto;
 
     public HistoricoPosicaoId() {}
 
-    public HistoricoPosicaoId(LocalDate dataAtualizacao, Integer idMoto) {
+    public HistoricoPosicaoId(LocalDate dataAtualizacao, Moto moto) {
         this.dataAtualizacao = dataAtualizacao;
-        this.idMoto = idMoto;
+        this.moto = moto;
     }
 
     public LocalDate getDataAtualizacao() { return dataAtualizacao; }
     public void setDataAtualizacao(LocalDate dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
-    public Integer getIdMoto() { return idMoto; }
-    public void setIdMoto(Integer idMoto) { this.idMoto = idMoto; }
+    public Moto getMoto() { return moto; }
+    public void setMoto(Moto moto) { this.moto = moto; }
 
     @Override
     public boolean equals(Object o) {
@@ -27,11 +32,11 @@ public class HistoricoPosicaoId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         HistoricoPosicaoId that = (HistoricoPosicaoId) o;
         return Objects.equals(dataAtualizacao, that.dataAtualizacao) &&
-                Objects.equals(idMoto, that.idMoto);
+                Objects.equals(moto, that.moto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataAtualizacao, idMoto);
+        return Objects.hash(dataAtualizacao, moto);
     }
 }

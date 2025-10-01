@@ -3,9 +3,9 @@
       xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout/base}">
+      layout:decorate="~{layout}">
 <head>
-    <title th:text="${usuario.idUsuario != null ? 'Editar Usuário - ' + ${usuario.nome} : 'Novo Usuário'} + ' - Mottu'">Novo Usuário - Mottu</title>
+    <title th:text="${moto.idMoto != null ? 'Editar Moto - ' + moto.placa : 'Nova Moto'} + ' - Mottu'">Nova Moto - Mottu</title>
 </head>
 <body>
     <div layout:fragment="content">
@@ -13,16 +13,16 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h3 mb-1">
-                    <i class="fas fa-user-plus me-2 text-primary"></i>
-                    <span th:text="${usuario.idUsuario != null ? 'Editar Usuário' : 'Novo Usuário'}">Novo Usuário</span>
+                    <i class="fas fa-motorcycle me-2 text-primary"></i>
+                    <span th:text="${moto.idMoto != null ? 'Editar Moto' : 'Nova Moto'}">Nova Moto</span>
                 </h1>
                 <p class="text-muted mb-0">
-                    <span th:if="${usuario.idUsuario != null}">Editando dados do usuário <strong th:text="${usuario.nome}">Usuário</strong></span>
-                    <span th:unless="${usuario.idUsuario != null}">Cadastrar um novo usuário no sistema</span>
+                    <span th:if="${moto.idMoto != null}">Editando dados da moto <strong th:text="${moto.placa}">ABC1234</strong></span>
+                    <span th:unless="${moto.idMoto != null}">Cadastrar uma nova moto no sistema</span>
                 </p>
             </div>
             <div>
-                <a th:href="@{/usuarios}" class="btn btn-outline-secondary">
+                <a th:href="@{/motos}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Voltar
                 </a>
             </div>
@@ -33,215 +33,60 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <form th:action="${usuario.idUsuario != null ? '/usuarios/' + usuario.idUsuario : '/usuarios'}" 
-                              th:method="${usuario.idUsuario != null ? 'post' : 'post'}" 
-                              th:object="${usuario}" 
-                              novalidate 
-                              data-validate>
-                            
-                            <!-- Hidden field para ID (caso seja edição) -->
-                            <input type="hidden" th:field="*{idUsuario}">
-                            
-                            <!-- Dados Pessoais -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-user me-2"></i>Dados Pessoais
-                                    </h5>
-                                </div>
-                            </div>
-                            
+                        <form th:action="@{/motos/salvar}" method="post" th:object="${moto}" novalidate data-validate>
+                            <input type="hidden" th:field="*{idMoto}" />
+                            <!-- Placa -->
                             <div class="row">
-                                <!-- Nome -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="nome" class="form-label">
-                                        <i class="fas fa-user me-1"></i>Nome Completo *
-                                    </label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           th:field="*{nome}" 
-                                           id="nome" 
-                                           placeholder="João Silva"
-                                           maxlength="50"
-                                           required
-                                           th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
-                                        Erro no nome
-                                    </div>
+                                    <label for="placa" class="form-label"><i class="fas fa-car me-1"></i>Placa *</label>
+                                    <input type="text" class="form-control" th:field="*{placa}" id="placa" placeholder="ABC1D23" maxlength="7" required th:classappend="${#fields.hasErrors('placa')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}">Erro na placa</div>
                                 </div>
-                                
-                                <!-- Email -->
+                                <!-- Ano de Fabricação -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="email" class="form-label">
-                                        <i class="fas fa-envelope me-1"></i>Email *
-                                    </label>
-                                    <input type="email" 
-                                           class="form-control" 
-                                           th:field="*{email}" 
-                                           id="email" 
-                                           placeholder="joao@mottu.com"
-                                           maxlength="100"
-                                           required
-                                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-                                        Erro no email
-                                    </div>
-                                    <div class="form-text">Email será usado para login no sistema</div>
+                                    <label for="anoFabricacao" class="form-label"><i class="fas fa-calendar-alt me-1"></i>Ano de Fabricação *</label>
+                                    <input type="number" class="form-control" th:field="*{anoFabricacao}" id="anoFabricacao" placeholder="2023" min="1900" max="2100" required th:classappend="${#fields.hasErrors('anoFabricacao')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('anoFabricacao')}" th:errors="*{anoFabricacao}">Erro no ano</div>
                                 </div>
                             </div>
-                            
-                            <!-- Credenciais de Acesso -->
-                            <div class="row mb-4 mt-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-key me-2"></i>Credenciais de Acesso
-                                    </h5>
-                                </div>
-                            </div>
-                            
+                            <!-- Modelo e Pátio -->
                             <div class="row">
-                                <!-- Senha -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="senha" class="form-label">
-                                        <i class="fas fa-lock me-1"></i>
-                                        <span th:text="${usuario.idUsuario != null ? 'Nova Senha (deixe em branco para manter)' : 'Senha *'}">Senha *</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <input type="password" 
-                                               class="form-control" 
-                                               th:field="*{senha}" 
-                                               id="senha" 
-                                               placeholder="Mínimo 6 caracteres"
-                                               minlength="6"
-                                               th:required="${usuario.idUsuario == null}"
-                                               th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'">
-                                        <button class="btn btn-outline-secondary" type="button" id="toggleSenha">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}">
-                                        Erro na senha
-                                    </div>
-                                    <div class="form-text">Mínimo 6 caracteres, incluindo letras e números</div>
-                                </div>
-                                
-                                <!-- Confirmar Senha -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="confirmarSenha" class="form-label">
-                                        <i class="fas fa-lock me-1"></i>Confirmar Senha
-                                    </label>
-                                    <input type="password" 
-                                           class="form-control" 
-                                           id="confirmarSenha" 
-                                           name="confirmarSenha"
-                                           placeholder="Digite a senha novamente">
-                                    <div class="invalid-feedback" id="erro-confirmar-senha" style="display: none;">
-                                        As senhas não coincidem
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Permissões e Status -->
-                            <div class="row mb-4 mt-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-shield-alt me-2"></i>Permissões e Status
-                                    </h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <!-- Perfil -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="perfil" class="form-label">
-                                        <i class="fas fa-user-tag me-1"></i>Perfil *
-                                    </label>
-                                    <select class="form-select" 
-                                            th:field="*{perfil}" 
-                                            id="perfil" 
-                                            required
-                                            th:classappend="${#fields.hasErrors('perfil')} ? 'is-invalid'">
-                                        <option value="">Selecione o perfil</option>
-                                        <option value="ADMIN">Administrador - Acesso total</option>
-                                        <option value="OPERADOR">Operador - CRUD motos e visualização</option>
-                                        <option value="MANUTENCAO">Manutenção - Apenas visualização</option>
+                                    <label for="modelo" class="form-label"><i class="fas fa-car-side me-1"></i>Modelo *</label>
+                                    <select class="form-select" th:field="*{modelo.idModelo}" id="modelo" required th:classappend="${#fields.hasErrors('modelo.idModelo')} ? 'is-invalid'">
+                                        <option value="" disabled th:selected="${moto.modelo == null}">Selecione o modelo</option>
+                                        <option th:each="modelo : ${modelos}" th:value="${modelo.idModelo}" th:text="${modelo.nomeModelo}" th:selected="${moto.modelo != null and moto.modelo.idModelo == modelo.idModelo}"></option>
                                     </select>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('perfil')}" th:errors="*{perfil}">
-                                        Erro no perfil
-                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('modelo.idModelo')}" th:errors="*{modelo.idModelo}">Erro no modelo</div>
                                 </div>
-                                
-                                <!-- Status Ativo -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="ativo" class="form-label">
-                                        <i class="fas fa-toggle-on me-1"></i>Status
-                                    </label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               th:field="*{ativo}" 
-                                               id="ativo">
-                                        <label class="form-check-label" for="ativo">
-                                            <span id="status-label">Usuário Ativo</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-text">Usuários inativos não podem fazer login</div>
+                                    <label for="patio" class="form-label"><i class="fas fa-warehouse me-1"></i>Pátio *</label>
+                                    <select class="form-select" th:field="*{patio.idPatio}" id="patio" required th:classappend="${#fields.hasErrors('patio.idPatio')} ? 'is-invalid'">
+                                        <option value="" disabled th:selected="${moto.patio == null}">Selecione o pátio</option>
+                                        <option th:each="patio : ${patios}" th:value="${patio.idPatio}" th:text="${patio.nomePatio}" th:selected="${moto.patio != null and moto.patio.idPatio == patio.idPatio}"></option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('patio.idPatio')}" th:errors="*{patio.idPatio}">Erro no pátio</div>
                                 </div>
                             </div>
-                            
-                            <!-- Prévia do Perfil -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-eye me-2"></i>Prévia do Usuário
-                                    </h5>
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-2 text-center">
-                                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto"
-                                                         style="width: 60px; height: 60px;">
-                                                        <span id="preview-avatar" class="fs-4">U</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <h6 class="card-title mb-1" id="preview-nome">Nome do Usuário</h6>
-                                                    <p class="card-text mb-2">
-                                                        <i class="fas fa-envelope me-1 text-muted"></i>
-                                                        <span id="preview-email">email@mottu.com</span>
-                                                    </p>
-                                                    <p class="card-text mb-0">
-                                                        <span class="badge" id="preview-perfil-badge">
-                                                            <span id="preview-perfil">Perfil</span>
-                                                        </span>
-                                                        <span class="badge ms-2" id="preview-status-badge">
-                                                            <span id="preview-status">Status</span>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="status" class="form-label"><i class="fas fa-toggle-on me-1"></i>Status *</label>
+                                    <select class="form-select" th:field="*{status}" id="status" required th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'">
+                                        <option value="DISPONIVEL">Disponível</option>
+                                        <option value="ALUGADA">Alugada</option>
+                                        <option value="MANUTENCAO">Em Manutenção</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Erro no status</div>
                                 </div>
                             </div>
-                            
                             <!-- Botões -->
                             <div class="row mt-4">
                                 <div class="col-12">
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <a th:href="@{/usuarios}" class="btn btn-secondary">
-                                            <i class="fas fa-times me-2"></i>Cancelar
-                                        </a>
-                                        <div>
-                                            <button type="button" class="btn btn-outline-primary me-2" onclick="limparFormulario()">
-                                                <i class="fas fa-eraser me-2"></i>Limpar
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-save me-2"></i>
-                                                <span th:text="${usuario.idUsuario != null ? 'Atualizar Usuário' : 'Cadastrar Usuário'}">Cadastrar Usuário</span>
-                                            </button>
-                                        </div>
+                                        <a th:href="@{/motos}" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Cancelar</a>
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i><span th:text="${moto.idMoto != null ? 'Atualizar Moto' : 'Cadastrar Moto'}">Cadastrar Moto</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -294,65 +139,38 @@
             
             // Atualizar prévia em tempo real
             function atualizarPrevia() {
-                const nome = document.getElementById('nome').value || 'Nome do Usuário';
-                const email = document.getElementById('email').value || 'email@mottu.com';
-                const perfil = document.getElementById('perfil').value || 'OPERADOR';
-                const ativo = document.getElementById('ativo').checked;
-                
+                const modelo = document.getElementById('modelo').value || 'Modelo da Moto';
+                const marca = document.getElementById('marca').value || 'Marca da Moto';
+                const disponivel = document.getElementById('disponivel').checked;
+
                 // Atualizar avatar
-                document.getElementById('preview-avatar').textContent = nome.charAt(0).toUpperCase();
-                
+                document.getElementById('preview-avatar').textContent = modelo.charAt(0).toUpperCase();
+
                 // Atualizar informações
-                document.getElementById('preview-nome').textContent = nome;
-                document.getElementById('preview-email').textContent = email;
-                
-                // Atualizar perfil
-                const perfilTexto = {
-                    'ADMIN': 'Administrador',
-                    'OPERADOR': 'Operador', 
-                    'MANUTENCAO': 'Manutenção'
-                };
-                
-                const perfilBadge = document.getElementById('preview-perfil-badge');
-                document.getElementById('preview-perfil').textContent = perfilTexto[perfil] || 'Perfil';
-                
-                perfilBadge.className = 'badge ';
-                switch(perfil) {
-                    case 'ADMIN':
-                        perfilBadge.className += 'bg-danger';
-                        break;
-                    case 'OPERADOR':
-                        perfilBadge.className += 'bg-primary';
-                        break;
-                    case 'MANUTENCAO':
-                        perfilBadge.className += 'bg-warning';
-                        break;
-                    default:
-                        perfilBadge.className += 'bg-secondary';
-                }
-                
+                document.getElementById('preview-modelo').textContent = modelo;
+                document.getElementById('preview-marca').textContent = marca;
+
                 // Atualizar status
                 const statusBadge = document.getElementById('preview-status-badge');
                 const statusSpan = document.getElementById('preview-status');
                 const statusLabel = document.getElementById('status-label');
                 
-                if (ativo) {
+                if (disponivel) {
                     statusBadge.className = 'badge ms-2 bg-success';
-                    statusSpan.textContent = 'Ativo';
-                    statusLabel.textContent = 'Usuário Ativo';
+                    statusSpan.textContent = 'Disponível';
+                    statusLabel.textContent = 'Moto Disponível';
                 } else {
                     statusBadge.className = 'badge ms-2 bg-danger';
-                    statusSpan.textContent = 'Inativo';
-                    statusLabel.textContent = 'Usuário Inativo';
+                    statusSpan.textContent = 'Indisponível';
+                    statusLabel.textContent = 'Moto Indisponível';
                 }
             }
             
             // Event listeners para atualização em tempo real
-            document.getElementById('nome').addEventListener('input', atualizarPrevia);
-            document.getElementById('email').addEventListener('input', atualizarPrevia);
-            document.getElementById('perfil').addEventListener('change', atualizarPrevia);
-            document.getElementById('ativo').addEventListener('change', atualizarPrevia);
-            
+            document.getElementById('modelo').addEventListener('input', atualizarPrevia);
+            document.getElementById('marca').addEventListener('input', atualizarPrevia);
+            document.getElementById('disponivel').addEventListener('change', atualizarPrevia);
+
             // Inicializar prévia
             document.addEventListener('DOMContentLoaded', atualizarPrevia);
             

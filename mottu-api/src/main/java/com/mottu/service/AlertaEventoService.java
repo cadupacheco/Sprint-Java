@@ -1,7 +1,9 @@
 package com.mottu.service;
 
 import com.mottu.entity.AlertaEvento;
+import com.mottu.entity.Moto;
 import com.mottu.repository.AlertaEventoRepository;
+import com.mottu.repository.MotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,9 @@ public class AlertaEventoService {
 
     @Autowired
     private AlertaEventoRepository alertaEventoRepository;
+
+    @Autowired
+    private MotoRepository motoRepository;
 
     @Transactional(readOnly = true)
     public List<AlertaEvento> listarTodos() {
@@ -41,7 +46,8 @@ public class AlertaEventoService {
 
     @Transactional(readOnly = true)
     public List<AlertaEvento> buscarPorMoto(Long motoId) {
-        return alertaEventoRepository.findByIdMoto(motoId.intValue());
+        Optional<Moto> motoOpt = motoRepository.findById(motoId.intValue());
+        return motoOpt.map(moto -> alertaEventoRepository.findByMoto(moto)).orElseGet(java.util.Collections::emptyList);
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +74,8 @@ public class AlertaEventoService {
 
     @Transactional(readOnly = true)
     public long contarAlertasPorMoto(Long motoId) {
-        return alertaEventoRepository.countByIdMoto(motoId.intValue());
+        Optional<Moto> motoOpt = motoRepository.findById(motoId.intValue());
+        return motoOpt.map(moto -> alertaEventoRepository.countByMoto(moto)).orElse(0L);
     }
 
     public AlertaEvento salvar(AlertaEvento alerta) {
@@ -77,10 +84,12 @@ public class AlertaEventoService {
     }
 
     public AlertaEvento criarAlerta(String tipoAlerta, Long motoId) {
+        Moto moto = motoRepository.findById(motoId.intValue())
+                .orElseThrow(() -> new RuntimeException("Moto não encontrada com ID: " + motoId));
         AlertaEvento alerta = AlertaEvento.builder()
                 .tipoAlerta(tipoAlerta)
                 .dataGeracao(LocalDate.now()) // LocalDate, não LocalDateTime
-                .idMoto(motoId.intValue())
+                .moto(moto)
                 .build();
 
         return salvar(alerta);
@@ -113,8 +122,8 @@ public class AlertaEventoService {
             throw new RuntimeException("Tipo de alerta é obrigatório");
         }
 
-        if (alerta.getIdMoto() == null) {
-            throw new RuntimeException("ID da moto é obrigatório para o alerta");
+        if (alerta.getMoto() == null || alerta.getMoto().getIdMoto() == null) {
+            throw new RuntimeException("Moto é obrigatória para o alerta");
         }
 
         if (alerta.getDataGeracao() == null) {

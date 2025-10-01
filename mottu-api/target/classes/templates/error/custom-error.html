@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${titulo}">Erro</title>
-    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}"/>
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <h1 class="text-danger mb-3" th:text="${titulo}">Erro</h1>
-    <p class="lead" th:text="${mensagem}">Ocorreu um erro inesperado.</p>
-    <a class="btn btn-primary mt-3" th:href="@{/home}">Voltar ao início</a>
+<body>
+<div layout:fragment="content">
+    <div class="container" style="padding:40px 0">
+        <h1 class="text-danger" th:text="${titulo}">Erro</h1>
+        <p class="lead" th:text="${mensagem}">Ocorreu um erro inesperado.</p>
+        <p><a class="pill" th:href="@{/home}">Voltar ao início</a></p>
+    </div>
 </div>
-<script th:src="@{/static/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

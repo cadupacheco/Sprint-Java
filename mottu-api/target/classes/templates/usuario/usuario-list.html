@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br" 
-      xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout/base}">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout}">
 <head>
-    <title>Usuários - Mottu</title>
+    <title>Gerenciamento de Usuários - Mottu</title>
 </head>
 <body>
-    <div layout:fragment="content">
+<div layout:fragment="content">
         <!-- Page Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -19,7 +15,8 @@
                 <p class="text-muted mb-0">Lista e controle de todos os usuários do sistema</p>
             </div>
             <div>
-                <a th:href="@{/usuarios/novo}" class="btn btn-primary">
+                <!-- Botão Novo Usuário protegido -->
+                <a th:href="@{/usuarios/novo}" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">
                     <i class="fas fa-user-plus me-2"></i>Novo Usuário
                 </a>
             </div>

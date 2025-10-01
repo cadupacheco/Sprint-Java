@@ -1,356 +1,144 @@
 <!DOCTYPE html>
-<html lang="pt-br" 
-      xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout/base}">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout}">
 <head>
-    <title th:text="${modelo.idModelo != null ? 'Editar Modelo - ' + ${modelo.nomeModelo} : 'Novo Modelo'} + ' - Mottu'">Novo Modelo - Mottu</title>
+    <title th:text="${modelo.idModelo != null ? 'Editar Modelo' : 'Novo Modelo'} + ' - Mottu'">Modelo - Mottu</title>
 </head>
 <body>
-    <div layout:fragment="content">
-        <!-- Page Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="h3 mb-1">
-                    <i class="fas fa-cogs me-2 text-primary"></i>
-                    <span th:text="${modelo.idModelo != null ? 'Editar Modelo' : 'Novo Modelo'}">Novo Modelo</span>
-                </h1>
-                <p class="text-muted mb-0">
-                    <span th:if="${modelo.idModelo != null}">Editando dados do modelo <strong th:text="${modelo.fabricante + ' ' + modelo.nomeModelo}">Honda CB600F</strong></span>
-                    <span th:unless="${modelo.idModelo != null}">Cadastrar um novo modelo de moto</span>
-                </p>
-            </div>
-            <div>
-                <a th:href="@{/modelos}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Voltar
-                </a>
-            </div>
+<div layout:fragment="content">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                <i class="fas fa-cogs me-2 text-primary"></i>
+                <span th:text="${modelo.idModelo != null ? 'Editar Modelo' : 'Novo Modelo'}">Novo Modelo</span>
+            </h1>
+            <p class="text-muted mb-0">
+                <span th:if="${modelo.idModelo != null}">Editando dados do modelo <strong th:text="${modelo.fabricante + ' ' + modelo.nomeModelo}">Honda CB600F</strong></span>
+                <span th:unless="${modelo.idModelo != null}">Cadastrar um novo modelo de moto</span>
+            </p>
         </div>
+        <div>
+            <a th:href="@{/modelos}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Voltar
+            </a>
+        </div>
+    </div>
 
-        <!-- Formulário -->
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <form th:action="${modelo.idModelo != null ? '/modelos/' + modelo.idModelo : '/modelos'}" 
-                              th:method="${modelo.idModelo != null ? 'post' : 'post'}" 
-                              th:object="${modelo}" 
-                              novalidate 
-                              data-validate>
-                            
-                            <!-- Hidden field para ID (caso seja edição) -->
-                            <input type="hidden" th:field="*{idModelo}">
-                            
-                            <!-- Dados do Modelo -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-info-circle me-2"></i>Informações do Modelo
-                                    </h5>
+    <!-- Formulário -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="${modelo.idModelo != null ? '/modelos/' + modelo.idModelo : '/modelos'}"
+                          th:method="post"
+                          th:object="${modelo}"
+                          novalidate
+                          data-validate>
+                        <!-- Hidden field para ID (caso seja edição) -->
+                        <input type="hidden" th:field="*{idModelo}">
+                        <!-- Dados do Modelo -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="card-title border-bottom pb-2">
+                                    <i class="fas fa-info-circle me-2"></i>Informações do Modelo
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Fabricante -->
+                            <div class="col-md-6 mb-3">
+                                <label for="fabricante" class="form-label">
+                                    <i class="fas fa-industry me-1"></i>Fabricante *
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{fabricante}"
+                                       id="fabricante"
+                                       placeholder="Honda, Yamaha, BMW, etc."
+                                       maxlength="50"
+                                       required
+                                       list="fabricantes-sugestoes"
+                                       th:classappend="${#fields.hasErrors('fabricante')} ? 'is-invalid'">
+                                <datalist id="fabricantes-sugestoes">
+                                    <option value="Honda">
+                                    <option value="Yamaha">
+                                    <option value="BMW">
+                                    <option value="Kawasaki">
+                                    <option value="Suzuki">
+                                    <option value="Ducati">
+                                    <option value="Triumph">
+                                    <option value="Harley-Davidson">
+                                </datalist>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('fabricante')}" th:errors="*{fabricante}">
+                                    Erro no fabricante
                                 </div>
                             </div>
-                            
-                            <div class="row">
-                                <!-- Fabricante -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="fabricante" class="form-label">
-                                        <i class="fas fa-industry me-1"></i>Fabricante *
-                                    </label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           th:field="*{fabricante}" 
-                                           id="fabricante" 
-                                           placeholder="Honda, Yamaha, BMW, etc."
-                                           maxlength="50"
-                                           required
-                                           list="fabricantes-sugestoes"
-                                           th:classappend="${#fields.hasErrors('fabricante')} ? 'is-invalid'">
-                                    <datalist id="fabricantes-sugestoes">
-                                        <option value="Honda">
-                                        <option value="Yamaha">
-                                        <option value="BMW">
-                                        <option value="Kawasaki">
-                                        <option value="Suzuki">
-                                        <option value="Ducati">
-                                        <option value="Triumph">
-                                        <option value="Harley-Davidson">
-                                    </datalist>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('fabricante')}" th:errors="*{fabricante}">
-                                        Erro no fabricante
-                                    </div>
-                                </div>
-                                
-                                <!-- Nome do Modelo -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="nomeModelo" class="form-label">
-                                        <i class="fas fa-tag me-1"></i>Nome do Modelo *
-                                    </label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           th:field="*{nomeModelo}" 
-                                           id="nomeModelo" 
-                                           placeholder="CB600F, MT-07, R1, etc."
-                                           maxlength="50"
-                                           required
-                                           th:classappend="${#fields.hasErrors('nomeModelo')} ? 'is-invalid'">
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeModelo')}" th:errors="*{nomeModelo}">
-                                        Erro no nome do modelo
-                                    </div>
+                            <!-- Nome do Modelo -->
+                            <div class="col-md-6 mb-3">
+                                <label for="nomeModelo" class="form-label">
+                                    <i class="fas fa-tag me-1"></i>Nome do Modelo *
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{nomeModelo}"
+                                       id="nomeModelo"
+                                       placeholder="CB600F, MT-07, R1, etc."
+                                       maxlength="50"
+                                       required
+                                       th:classappend="${#fields.hasErrors('nomeModelo')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeModelo')}" th:errors="*{nomeModelo}">
+                                    Erro no nome do modelo
                                 </div>
                             </div>
-                            
-                            <div class="row">
-                                <!-- Cilindrada -->
-                                <div class="col-md-4 mb-3">
-                                    <label for="cilindrada" class="form-label">
-                                        <i class="fas fa-tachometer-alt me-1"></i>Cilindrada (cc) *
-                                    </label>
-                                    <input type="number" 
-                                           class="form-control" 
-                                           th:field="*{cilindrada}" 
-                                           id="cilindrada" 
-                                           placeholder="600"
-                                           min="50" 
-                                           max="2000"
-                                           step="1"
-                                           required
-                                           th:classappend="${#fields.hasErrors('cilindrada')} ? 'is-invalid'">
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('cilindrada')}" th:errors="*{cilindrada}">
-                                        Erro na cilindrada
-                                    </div>
-                                    <div class="form-text">Volume do motor em centímetros cúbicos</div>
-                                </div>
-                                
-                                <!-- Tipo -->
-                                <div class="col-md-8 mb-3">
-                                    <label for="tipo" class="form-label">
-                                        <i class="fas fa-list me-1"></i>Tipo/Categoria *
-                                    </label>
-                                    <select class="form-select" 
-                                            th:field="*{tipo}" 
-                                            id="tipo" 
-                                            required
-                                            th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'">
-                                        <option value="">Selecione o tipo</option>
-                                        <option value="Naked">Naked - Moto sem carenagem</option>
-                                        <option value="Esportiva">Esportiva - Moto de alta performance</option>
-                                        <option value="Scooter">Scooter - Moto automática</option>
-                                        <option value="Adventure">Adventure - Moto para viagem</option>
-                                        <option value="Touring">Touring - Moto de turismo</option>
-                                        <option value="Cruiser">Cruiser - Moto estilo custom</option>
-                                        <option value="Trail">Trail - Moto mista</option>
-                                        <option value="Supermoto">Supermoto - Moto urbana esportiva</option>
-                                    </select>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">
-                                        Erro no tipo
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <!-- Cilindrada -->
+                            <div class="col-md-4 mb-3">
+                                <label for="cilindrada" class="form-label">
+                                    <i class="fas fa-tachometer-alt me-1"></i>Cilindrada (cc) *
+                                </label>
+                                <input type="number" class="form-control" th:field="*{cilindrada}" id="cilindrada" min="50" max="2000" required th:classappend="${#fields.hasErrors('cilindrada')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('cilindrada')}" th:errors="*{cilindrada}">Erro na cilindrada</div>
                             </div>
-                            
-                            <!-- Análise de Cilindrada -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-chart-line me-2"></i>Análise Técnica
-                                    </h5>
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <label class="form-label text-muted">Classificação</label>
-                                                    <div class="fs-6">
-                                                        <span class="badge" id="classificacao-badge">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label text-muted">Uso Recomendado</label>
-                                                    <div class="fs-6" id="uso-recomendado">-</div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label text-muted">Nível de Experiência</label>
-                                                    <div class="fs-6" id="nivel-experiencia">-</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Tipo -->
+                            <div class="col-md-4 mb-3">
+                                <label for="tipo" class="form-label">
+                                    <i class="fas fa-list me-1"></i>Tipo *
+                                </label>
+                                <select class="form-select" th:field="*{tipo}" id="tipo" required th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'">
+                                    <option value="">Selecione...</option>
+                                    <option value="Naked">Naked</option>
+                                    <option value="Esportiva">Esportiva</option>
+                                    <option value="Scooter">Scooter</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Touring">Touring</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Erro no tipo</div>
                             </div>
-                            
-                            <!-- Prévia do Modelo -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h5 class="card-title border-bottom pb-2">
-                                        <i class="fas fa-eye me-2"></i>Prévia do Modelo
-                                    </h5>
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-2 text-center">
-                                                    <i class="fas fa-motorcycle fa-3x text-primary"></i>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <h6 class="card-title mb-1">
-                                                        <span id="preview-fabricante">Fabricante</span> 
-                                                        <span id="preview-modelo">Modelo</span>
-                                                    </h6>
-                                                    <p class="card-text mb-2">
-                                                        <span class="badge bg-primary me-2">
-                                                            <i class="fas fa-tachometer-alt me-1"></i>
-                                                            <span id="preview-cilindrada">0</span>cc
-                                                        </span>
-                                                        <span class="badge" id="preview-tipo-badge">
-                                                            <span id="preview-tipo">Tipo</span>
-                                                        </span>
-                                                    </p>
-                                                    <small class="text-muted" id="preview-descricao">
-                                                        Descrição será gerada automaticamente...
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Ano -->
+                            <div class="col-md-4 mb-3">
+                                <label for="ano" class="form-label">
+                                    <i class="fas fa-calendar-alt me-1"></i>Ano *
+                                </label>
+                                <input type="number" class="form-control" th:field="*{ano}" id="ano" min="1980" max="2100" required th:classappend="${#fields.hasErrors('ano')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('ano')}" th:errors="*{ano}">Erro no ano</div>
                             </div>
-                            
-                            <!-- Botões -->
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <hr>
-                                    <div class="d-flex justify-content-between">
-                                        <a th:href="@{/modelos}" class="btn btn-secondary">
-                                            <i class="fas fa-times me-2"></i>Cancelar
-                                        </a>
-                                        <div>
-                                            <button type="button" class="btn btn-outline-primary me-2" onclick="limparFormulario()">
-                                                <i class="fas fa-eraser me-2"></i>Limpar
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-save me-2"></i>
-                                                <span th:text="${modelo.idModelo != null ? 'Atualizar Modelo' : 'Cadastrar Modelo'}">Cadastrar Modelo</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-2"></i>Salvar
+                                </button>
+                                <a th:href="@{/modelos}" class="btn btn-secondary ms-2">
+                                    <i class="fas fa-times me-2"></i>Cancelar
+                                </a>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Scripts específicos da página -->
-    <div layout:fragment="scripts">
-        <script>
-            // Atualizar prévia e análise em tempo real
-            function atualizarPrevia() {
-                const fabricante = document.getElementById('fabricante').value || 'Fabricante';
-                const modelo = document.getElementById('nomeModelo').value || 'Modelo';
-                const cilindrada = parseInt(document.getElementById('cilindrada').value) || 0;
-                const tipo = document.getElementById('tipo').value || 'Tipo';
-                
-                // Atualizar prévia
-                document.getElementById('preview-fabricante').textContent = fabricante;
-                document.getElementById('preview-modelo').textContent = modelo;
-                document.getElementById('preview-cilindrada').textContent = cilindrada;
-                document.getElementById('preview-tipo').textContent = tipo;
-                
-                // Atualizar cor do badge do tipo
-                const badge = document.getElementById('preview-tipo-badge');
-                badge.className = 'badge ';
-                switch(tipo) {
-                    case 'Esportiva':
-                        badge.className += 'bg-danger';
-                        break;
-                    case 'Naked':
-                        badge.className += 'bg-primary';
-                        break;
-                    case 'Scooter':
-                        badge.className += 'bg-info';
-                        break;
-                    case 'Adventure':
-                        badge.className += 'bg-success';
-                        break;
-                    default:
-                        badge.className += 'bg-secondary';
-                }
-                
-                // Análise técnica baseada na cilindrada
-                const classificacaoBadge = document.getElementById('classificacao-badge');
-                const usoRecomendado = document.getElementById('uso-recomendado');
-                const nivelExperiencia = document.getElementById('nivel-experiencia');
-                const descricao = document.getElementById('preview-descricao');
-                
-                if (cilindrada > 0) {
-                    if (cilindrada <= 125) {
-                        classificacaoBadge.textContent = 'Baixa Cilindrada';
-                        classificacaoBadge.className = 'badge bg-info';
-                        usoRecomendado.textContent = 'Urbano / Iniciante';
-                        nivelExperiencia.textContent = 'Iniciante';
-                        descricao.textContent = 'Ideal para iniciantes e uso urbano. Econômica e fácil de pilotar.';
-                    } else if (cilindrada <= 300) {
-                        classificacaoBadge.textContent = 'Média Cilindrada';
-                        classificacaoBadge.className = 'badge bg-primary';
-                        usoRecomendado.textContent = 'Urbano / Estrada';
-                        nivelExperiencia.textContent = 'Intermediário';
-                        descricao.textContent = 'Equilíbrio entre economia e performance. Versátil para cidade e estrada.';
-                    } else if (cilindrada <= 600) {
-                        classificacaoBadge.textContent = 'Alta Cilindrada';
-                        classificacaoBadge.className = 'badge bg-warning';
-                        usoRecomendado.textContent = 'Estrada / Performance';
-                        nivelExperiencia.textContent = 'Avançado';
-                        descricao.textContent = 'Para pilotos experientes. Boa performance em estrada e cidade.';
-                    } else {
-                        classificacaoBadge.textContent = 'Super Esportiva';
-                        classificacaoBadge.className = 'badge bg-danger';
-                        usoRecomendado.textContent = 'Performance / Pista';
-                        nivelExperiencia.textContent = 'Expert';
-                        descricao.textContent = 'Máxima performance e potência. Requer experiência e cuidado.';
-                    }
-                } else {
-                    classificacaoBadge.textContent = '-';
-                    classificacaoBadge.className = 'badge bg-secondary';
-                    usoRecomendado.textContent = '-';
-                    nivelExperiencia.textContent = '-';
-                    descricao.textContent = 'Informe a cilindrada para ver a análise técnica.';
-                }
-            }
-            
-            // Event listeners para atualização em tempo real
-            document.getElementById('fabricante').addEventListener('input', atualizarPrevia);
-            document.getElementById('nomeModelo').addEventListener('input', atualizarPrevia);
-            document.getElementById('cilindrada').addEventListener('input', atualizarPrevia);
-            document.getElementById('tipo').addEventListener('change', atualizarPrevia);
-            
-            // Inicializar prévia se for edição
-            document.addEventListener('DOMContentLoaded', atualizarPrevia);
-            
-            // Função para limpar formulário
-            function limparFormulario() {
-                if (confirm('Tem certeza que deseja limpar todos os campos?')) {
-                    document.querySelector('form').reset();
-                    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-                    document.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
-                    atualizarPrevia();
-                }
-            }
-            
-            // Validação personalizada
-            document.getElementById('fabricante').addEventListener('input', function(e) {
-                const value = e.target.value;
-                // Capitalizar primeira letra
-                if (value.length > 0) {
-                    e.target.value = value.charAt(0).toUpperCase() + value.slice(1);
-                }
-            });
-            
-            document.getElementById('nomeModelo').addEventListener('input', function(e) {
-                const value = e.target.value;
-                // Converter para maiúsculas para modelos
-                e.target.value = value.toUpperCase();
-            });
-        </script>
-    </div>
+</div>
 </body>
 </html>

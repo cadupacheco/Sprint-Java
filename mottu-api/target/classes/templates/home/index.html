@@ -1,107 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title th:text="${titulo}">Mottu - Início</title>
-    <link rel="stylesheet" th:href="@{/static/css/home.css}"/>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Página Inicial</title>
 </head>
 <body>
-<header class="topbar">
-    <div class="container">
-        <h1>Mottu</h1>
-        <nav class="menu">
-            <a th:href="@{/home}">Início</a>
-            <a th:href="@{/login}">Login</a>
-            <a th:href="@{/dashboard}">Dashboard</a>
-        </nav>
+    <div layout:fragment="content">
+        <h1 th:text="${titulo}">Página Inicial</h1>
+        <p>Se você está vendo esta página, o Thymeleaf com layout está funcionando!</p>
     </div>
-</header>
-
-<main class="container">
-    <section class="grid">
-        <!-- Se houver página Thymeleaf /login -->
-        <a class="card link" th:href="@{/login}">
-            <h3>Autenticação</h3>
-            <p>Acesse a tela de login.</p>
-            <span class="pill">/login</span>
-        </a>
-
-        <!-- Dashboard -->
-        <a class="card link" th:href="@{/dashboard}">
-            <h3>Dashboard</h3>
-            <p>Visão geral do sistema.</p>
-            <span class="pill">/dashboard</span>
-        </a>
-
-        <!-- Modelos (página Thymeleaf esperada) -->
-        <a class="card link" th:href="@{/modelos}">
-            <h3>Modelos</h3>
-            <p>Gerencie modelos de motos.</p>
-            <span class="pill">/modelos</span>
-        </a>
-
-        <!-- Motos -->
-        <a class="card link" th:href="@{/motos}">
-            <h3>Motos</h3>
-            <p>CRUD de motos.</p>
-            <span class="pill">/motos</span>
-        </a>
-
-        <!-- Pátios -->
-        <a class="card link" th:href="@{/patios}">
-            <h3>Pátios</h3>
-            <p>Gestão de pátios e ocupação.</p>
-            <span class="pill">/patios</span>
-        </a>
-
-        <!-- Usuários -->
-        <a class="card link" th:href="@{/usuarios}">
-            <h3>Usuários</h3>
-            <p>Gestão de usuários e perfis.</p>
-            <span class="pill">/usuarios</span>
-        </a>
-
-        <!-- Sensores -->
-        <a class="card link" th:href="@{/sensores}">
-            <h3>Sensores IoT</h3>
-            <p>Cadastro e monitoramento.</p>
-            <span class="pill">/sensores</span>
-        </a>
-
-        <!-- Histórico -->
-        <a class="card link" th:href="@{/historico}">
-            <h3>Histórico</h3>
-            <p>Eventos e atividades.</p>
-            <span class="pill">/historico</span>
-        </a>
-
-        <!-- Alertas -->
-        <a class="card link" th:href="@{/alertas}">
-            <h3>Alertas</h3>
-            <p>Monitoramento de alertas.</p>
-            <span class="pill">/alertas</span>
-        </a>
-
-        <!-- Links diretos API (se usar REST-only) -->
-        <a class="card link outline" th:href="@{/api/motos}">
-            <h3>API Motos</h3>
-            <p>Endpoint REST JSON.</p>
-            <span class="pill">/api/motos</span>
-        </a>
-
-        <a class="card link outline" th:href="@{/api/clientes}">
-            <h3>API Clientes</h3>
-            <p>Endpoint REST JSON.</p>
-            <span class="pill">/api/clientes</span>
-        </a>
-    </section>
-</main>
-
-<footer class="footer">
-    <div class="container">
-        <small>© 2025 Mottu • Sistema de Gerenciamento</small>
-    </div>
-</footer>
 </body>
 </html>

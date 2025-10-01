@@ -41,7 +41,9 @@
         }
     </style>
 </head>
-<body>
+<body sec:authorize="isAuthenticated()"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="error-container">
         <div class="error-card">
             <!-- Ícone de Erro -->

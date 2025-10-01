@@ -9,28 +9,22 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "HISTORICO_POSICAO")
-@IdClass(HistoricoPosicaoId.class)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoricoPosicao {
 
-    @Id
-    @Column(name = "DATA_ATUALIZACAO")
-    private LocalDate dataAtualizacao;
+    @EmbeddedId
+    private HistoricoPosicaoId id;
 
-    @Id
-    @Column(name = "ID_MOTO")
-    private Integer idMoto;
-
-    @Column(name = "POSICAO_X") // REMOVIDO: precision = 10, scale = 2
+    @Column(name = "POSICAO_X")
     private Double posicaoX;
 
-    @Column(name = "POSICAO_Y") // REMOVIDO: precision = 10, scale = 2
+    @Column(name = "POSICAO_Y")
     private Double posicaoY;
 
-    @Column(name = "ACURACIA_LOCALIZACAO") // REMOVIDO: precision = 5, scale = 2
+    @Column(name = "ACURACIA_LOCALIZACAO")
     private Double acuraciaLocalizacao;
 
     @Column(name = "ORIGEM_DETECTADA", length = 20)

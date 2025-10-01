@@ -1,5 +1,7 @@
 package com.mottu.config;
 
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,5 +21,11 @@ public class WebViewRoutes implements WebMvcConfigurer {
         registry.addViewController("/historico").setViewName("historico/index");
         registry.addViewController("/alertas").setViewName("alertas/index");
         registry.addViewController("/login").setViewName("auth/login");
+        registry.addViewController("/home").setViewName("home/index");
+    }
+
+    @Bean
+    public LayoutDialect layoutDialect() {
+        return new LayoutDialect();
     }
 }

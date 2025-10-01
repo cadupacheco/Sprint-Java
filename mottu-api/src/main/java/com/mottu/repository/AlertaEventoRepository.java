@@ -1,6 +1,7 @@
 package com.mottu.repository;
 
 import com.mottu.entity.AlertaEvento;
+import com.mottu.entity.Moto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,8 @@ public interface AlertaEventoRepository extends JpaRepository<AlertaEvento, Long
     // Busca por tipo de alerta
     List<AlertaEvento> findByTipoAlerta(String tipoAlerta);
 
-    // Busca por moto (INTEGER)
-    List<AlertaEvento> findByIdMoto(Integer idMoto);
+    // Busca por moto (Moto entity)
+    List<AlertaEvento> findByMoto(Moto moto);
 
     // Busca por data de geração (LocalDate - DATE no banco)
     List<AlertaEvento> findByDataGeracao(LocalDate dataGeracao);
@@ -26,16 +27,16 @@ public interface AlertaEventoRepository extends JpaRepository<AlertaEvento, Long
     List<AlertaEvento> findByDataGeracaoBetween(LocalDate inicio, LocalDate fim);
 
     // Busca por tipo e moto
-    List<AlertaEvento> findByTipoAlertaAndIdMoto(String tipoAlerta, Integer idMoto);
+    List<AlertaEvento> findByTipoAlertaAndMoto(String tipoAlerta, Moto moto);
 
     // Ordenação por data mais recente
     List<AlertaEvento> findAllByOrderByDataGeracaoDesc();
-    List<AlertaEvento> findByIdMotoOrderByDataGeracaoDesc(Integer idMoto);
+    List<AlertaEvento> findByMotoOrderByDataGeracaoDesc(Moto moto);
     List<AlertaEvento> findByTipoAlertaOrderByDataGeracaoDesc(String tipoAlerta);
 
     // Contadores
     long countByTipoAlerta(String tipoAlerta);
-    long countByIdMoto(Integer idMoto);
+    long countByMoto(Moto moto);
     long countByDataGeracaoAfter(LocalDate data);
 
     // Delete por data (LocalDate)
@@ -45,6 +46,6 @@ public interface AlertaEventoRepository extends JpaRepository<AlertaEvento, Long
 
     // Delete por moto
     @Modifying
-    @Query("DELETE FROM AlertaEvento a WHERE a.idMoto = :idMoto")
-    void deleteByIdMoto(@Param("idMoto") Integer idMoto);
+    @Query("DELETE FROM AlertaEvento a WHERE a.moto = :moto")
+    void deleteByMoto(@Param("moto") Moto moto);
 }

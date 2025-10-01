@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MotoRepository extends JpaRepository<Moto, Long> {
-    
+public interface MotoRepository extends JpaRepository<Moto, Integer> {
+
     // Busca por placa
     Optional<Moto> findByPlaca(String placa);
     
@@ -27,19 +27,19 @@ public interface MotoRepository extends JpaRepository<Moto, Long> {
     List<Moto> findByStatus(String status);
     
     // Busca por pátio
-    List<Moto> findByPatio_IdPatio(Long patioId);
-    
+    List<Moto> findByPatio_IdPatio(Integer patioId);
+
     // Busca por modelo
-    List<Moto> findByModelo_IdModelo(Long modeloId);
-    
+    List<Moto> findByModelo_IdModelo(Integer modeloId);
+
     // Contadores
     long countByStatus(String status);
-    long countByPatio_IdPatio(Long patioId);
-    
+    long countByPatio_IdPatio(Integer patioId);
+
     // Query customizada para dashboard
     @Query("SELECT m FROM Moto m WHERE m.status = :status AND m.patio.idPatio = :patioId")
-    List<Moto> findByStatusAndPatio(@Param("status") String status, @Param("patioId") Long patioId);
-    
+    List<Moto> findByStatusAndPatio(@Param("status") String status, @Param("patioId") Integer patioId);
+
     // Query para motos com sensor IoT
     @Query("SELECT m FROM Moto m WHERE m.sensorIot IS NOT NULL")
     List<Moto> findMotosComSensor();

@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br" 
-      xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout/base}">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout}">
 <head>
-    <title>Sensores IoT - Mottu</title>
+    <title>Gerenciamento de Sensores IoT - Mottu</title>
 </head>
 <body>
-    <div layout:fragment="content">
+<div layout:fragment="content">
         <!-- Page Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -500,5 +496,6 @@
             }, 30000);
         </script>
     </div>
+</div>
 </body>
 </html>
