@@ -10,11 +10,23 @@ public class UsuarioController {
     @GetMapping("/usuarios")
     public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "usuarios/lista";
+        return "usuario/usuario-list";
+    }
+
+    @GetMapping("/usuarios/novo")
+    public String novo(Model model) {
+        model.addAttribute("usuario", new Object());
+        return "usuario/usuario-form";
+    }
+
+    @GetMapping("/usuarios/detalhe")
+    public String detalhe(Model model) {
+        model.addAttribute("usuario", new Object());
+        return "usuario/usuario-view";
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login() {
         return "auth/login";
     }
 }

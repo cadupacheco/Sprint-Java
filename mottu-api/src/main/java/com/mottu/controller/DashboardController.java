@@ -15,14 +15,11 @@ public class DashboardController {
         model.addAttribute("motosDisponiveis", 0);
         model.addAttribute("motosAlugadas", 0);
         model.addAttribute("motosManutencao", 0);
-
         model.addAttribute("totalPatios", 0);
         model.addAttribute("totalModelos", 0);
-
         model.addAttribute("alertasHoje", Collections.emptyList());
         model.addAttribute("alertasRecentes", Collections.emptyList());
         model.addAttribute("patiosDisponiveis", Collections.emptyList());
-
         return "dashboard/index";
     }
 }

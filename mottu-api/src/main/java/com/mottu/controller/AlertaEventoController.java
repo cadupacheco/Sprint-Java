@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AlertaController {
 
     @GetMapping("/alertas")
-    public String index(Model model) {
+    public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "alertas/index";
+        return "alerta/alerta-list";
     }
 }

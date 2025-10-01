@@ -10,12 +10,18 @@ public class ModeloController {
     @GetMapping("/modelos")
     public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "modelos/lista";
+        return "modelo/modelo-list";
     }
 
     @GetMapping("/modelos/novo")
     public String novo(Model model) {
         model.addAttribute("modelo", new Object());
-        return "modelos/form";
+        return "modelo/modelo-form";
+    }
+
+    @GetMapping("/modelos/detalhe")
+    public String detalhe(Model model) {
+        model.addAttribute("modelo", new Object());
+        return "modelo/modelo-view";
     }
 }

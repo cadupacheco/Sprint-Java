@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HistoricoController {
 
     @GetMapping("/historico")
-    public String index(Model model) {
+    public String listar(Model model) {
         model.addAttribute("registros", java.util.Collections.emptyList());
-        return "historico/index";
+        return "historico/historico-list";
     }
 }

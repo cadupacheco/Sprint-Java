@@ -10,12 +10,12 @@ public class SensorController {
     @GetMapping("/sensores")
     public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "sensores/lista";
+        return "sensor/sensor-list";
     }
 
     @GetMapping("/sensores/novo")
     public String novo(Model model) {
         model.addAttribute("sensor", new Object());
-        return "sensores/form";
+        return "sensor/sensor-form";
     }
 }

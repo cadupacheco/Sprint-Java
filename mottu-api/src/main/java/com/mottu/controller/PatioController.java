@@ -10,12 +10,18 @@ public class PatioController {
     @GetMapping("/patios")
     public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "patios/lista";
+        return "patio/patio-list";
     }
 
     @GetMapping("/patios/novo")
     public String novo(Model model) {
         model.addAttribute("patio", new Object());
-        return "patios/form";
+        return "patio/patio-form";
+    }
+
+    @GetMapping("/patios/detalhe")
+    public String detalhe(Model model) {
+        model.addAttribute("patio", new Object());
+        return "patio/patio-view";
     }
 }

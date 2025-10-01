@@ -10,12 +10,18 @@ public class MotoController {
     @GetMapping("/motos")
     public String listar(Model model) {
         model.addAttribute("itens", java.util.Collections.emptyList());
-        return "motos/lista";
+        return "moto/list";
     }
 
     @GetMapping("/motos/novo")
     public String novo(Model model) {
         model.addAttribute("moto", new Object());
-        return "motos/form";
+        return "moto/form";
+    }
+
+    @GetMapping("/motos/detalhe")
+    public String detalhe(Model model) {
+        model.addAttribute("moto", new Object());
+        return "moto/view";
     }
 }
