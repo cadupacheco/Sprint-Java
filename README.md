@@ -1,88 +1,114 @@
-🏍️ Mottu API – Sistema de Gerenciamento de Motos
-📄 Descrição do Projeto
-Este projeto é uma API REST desenvolvida em Java com Spring Boot, que oferece funcionalidades de gestão de motos, clientes e suas relações, permitindo controle, consulta e atualização dos dados. Foi criado como parte do Challenge da disciplina Java Advanced.
+# 🏍️ Mottu API – Sistema de Gerenciamento de Motos
 
-A API permite operações como:
+## 📄 Descrição do Projeto
 
-Cadastro, edição, listagem e exclusão de motos e clientes.
+A **Mottu API** é uma aplicação REST desenvolvida em Java com Spring Boot, criada como parte do Challenge da disciplina Java Advanced. O sistema permite a gestão de motos, clientes e suas relações, oferecendo controle, consulta e atualização dos dados.
 
-Busca com filtros, paginação e ordenação.
+Principais operações:
+- Cadastro, edição, listagem e exclusão de motos e clientes
+- Busca com filtros, paginação e ordenação
+- Validação de dados na entrada
+- Cache de consultas para performance
+- Tratamento de erros centralizado e boas práticas REST
 
-Validação de dados na entrada.
+---
 
-Cache de consultas para melhorar a performance.
+## 👨‍💻 Desenvolvedores
+- Carlos Eduardo R C Pacheco – RM: 557323
+- João Pedro Amorim Brito Virgens – RM: 559213
+- Pedro Augusto Costa Ladeira – RM: 558514
 
-Tratamento de erros centralizado e boas práticas de design REST.
+---
 
------------------------------------------------------------------------
+## 🚀 Tecnologias Utilizadas
+- Java 17
+- Spring Boot 3.2.5
+- Spring Web
+- Spring Data JPA
+- Spring Validation
+- Spring Cache
+- Maven
+- Oracle Database
+- Hibernate
+- Lombok (opcional)
 
-👨‍💻 Desenvolvedores:
+---
 
-Carlos Eduardo R C Pacheco – RM: 557323
+## ⚙️ Pré-requisitos
+- Java JDK 17 instalado
+- Oracle Database rodando (local ou remoto)
+- Maven instalado
+- IDE de sua escolha (IntelliJ, Eclipse, VS Code)
 
-João Pedro Amorim Brito Virgens – RM: 559213
+---
 
-Pedro Augusto Costa Ladeira – RM: 558514
+## 🏗️ Instalação e Execução
 
------------------------------------------------------------------------
+### 1️⃣ Clone o repositório
+```bash
+git clone https://github.com/cadupacheco/Sprint-Java.git
+cd Sprint-Java
+```
 
-🚀 Tecnologias Utilizadas
-Java 17
+### 2️⃣ Configure o Banco de Dados
+Edite o arquivo `src/main/resources/application.properties` com as credenciais do seu Oracle Database:
+```properties
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:XE
+spring.datasource.username=SEU_USUARIO
+spring.datasource.password=SUA_SENHA
+spring.jpa.hibernate.ddl-auto=update
+```
 
-Spring Boot 3.2.5
+### 3️⃣ Compile e execute o projeto
+```bash
+mvn clean install
+mvn spring-boot:run
+```
 
-Spring Web
+### 4️⃣ Acesse a API
+A aplicação estará disponível em:
+[http://localhost:8080](http://localhost:8080)
 
-Spring Data JPA
+---
 
-Spring Validation
+## 🔗 Endpoints Principais
+- `GET /api/motos` – Listar motos
+- `POST /api/motos` – Cadastrar moto
+- `PUT /api/motos/{id}` – Atualizar moto
+- `DELETE /api/motos/{id}` – Remover moto
+- `GET /api/clientes` – Listar clientes
+- `POST /api/clientes` – Cadastrar cliente
+- `PUT /api/clientes/{id}` – Atualizar cliente
+- `DELETE /api/clientes/{id}` – Remover cliente
 
-Spring Cache
+> **Obs:** Funcionalidades como paginação, ordenação e filtros estão disponíveis via parâmetros na URL.
 
-Maven
+---
 
-Oracle Database
+## ✅ Funcionalidades Implementadas
+- CRUD completo para Moto e Cliente
+- Relacionamento entre entidades
+- Busca com parâmetros
+- Paginação e ordenação
+- Validação de campos (Bean Validation)
+- Tratamento global de erros
+- Uso de DTOs para entrada e saída de dados
+- Cache para otimização de consultas
 
-Hibernate
+---
 
-Lombok (opcional)
+## 🛠️ Testes
+Para rodar os testes automatizados:
+```bash
+mvn test
+```
 
------------------------------------------------------------------------
+---
 
-⚙️ Como Executar o Projeto
-🔧 Pré-requisitos
-Java JDK 17 instalado
+## 📫 Contato
+Dúvidas ou sugestões? Entre em contato com um dos desenvolvedores ou abra uma issue no repositório.
 
-Oracle Database rodando (local ou remoto)
+---
 
-Maven instalado
-
-IDE de sua escolha (IntelliJ, Eclipse, VS Code)
-
------------------------------------------------------------------------
-
-🏗️ Passos para rodar:
-1️⃣ Clone ou baixe o projeto
-2️⃣ Configure o Banco de Dados no arquivo src/main/resources/application.properties.
-3️⃣ Compile e execute o projeto.
-4️⃣ Acesse a API na URL padrão
-    http://localhost:8080
-
------------------------------------------------------------------------
-    
-🔗 Endpoints Principais
-/api/motos – CRUD de motos
-
-/api/clientes – CRUD de clientes
-
-Funcionalidades como paginação, ordenação e filtros estão disponíveis via parâmetros na URL.
-
-✅ Funcionalidades Implementadas
-✅ CRUD completo para Moto e Cliente
-✅ Relacionamento entre entidades
-✅ Busca com parâmetros
-✅ Paginação e ordenação
-✅ Validação de campos (Bean Validation)
-✅ Tratamento global de erros
-✅ Uso de DTOs para entrada e saída de dados
-✅ Cache para otimização de consultas
+## 📝 Licença
+Este projeto é apenas para fins acadêmicos e não possui licença comercial.
